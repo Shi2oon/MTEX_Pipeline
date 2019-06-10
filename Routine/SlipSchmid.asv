@@ -1,0 +1,127 @@
+function [ebsd,MyData]=SlipSchmid(Dir,CS,ebsd,MI,MyData,grains)
+close all
+Dir.Def=fullfile(Dir.path,'Deformation');  mkdir(Dir.Def);
+
+setMTEXpref('defaultColorMap',WhiteJetColorMap) 
+
+for i=1:length(ebsd.indexedPhasesId)
+close all
+%% Set-up
+%define a crystal symmetry
+cs=crystalSymmetry(CS{i}.pointGroup,'mineral',CS{i}.mineral);
+C=stiffnessTensor(cs);
+plot(C,'complete','upper')
+E=shearModulus(C,h,u); %h	= shear plane .. u = shear direction
+%%  Dislocations
+    %Here the directions of the atomic shifts are orthogonal to the direction 
+    %the displacements spread within the material.
+
+    % BCC {110} <-111>, FCC {111} <1-10>).  
+b = Miller(1,1,0,cs,'uvw');   % define a burgers vector in crystal coordinates
+l = Miller(1,-1,-2,cs,'uvw'); % define a line vector in crystal coordinates
+
+    % Dislocation systems are tightly related to slip systems, this gives 
+    % edge and screw dislocations Burger and vectror and line vector
+if 'fcc'
+    n = Miller(1,1,1,CS,'hkl');      % slip plane normal
+    d = Miller(1,-1,0,CS,'uvw');     % slip direction
+    sS = symmetrise(slipSystem.fcc(ebsd.CS{i})); 
+elseif 'bcc'
+    n = Miller(1,1,0,CS,'hkl');      % slip plane normal
+    d = Miller(-1,1,1,CS,'uvw');       % slip direction
+    sS = symmetrise(slipSystem.bcc(ebsd.CS{i})); % define a family of slip systems
+end
+sS = slipSystem(d,n);
+dS = dislocationSystem(b,l);  % setup the dislocation system
+dS = dislocationSystem(sS); %the corresponding dislocation systems
+dS = dislocationSystem.bcc(cs); %Dominant Dislocation Systems
+
+%% Method 2: Slip System
+    % compute Schmid factorsS
+    sSLocal = grains.meanOrientation*sS; %dominant slip systems in material
+    sigma = stressTensor.uniaxial(vector3d.Z);
+    SF = sSLocal.SchmidFactor(sigma);
+    % take the maxium allong the rows
+    [SFMax,active] = max(SF,[],2);
+    % plot the maximum Schmid factor
+    plot(grains,SFMax,'micronbar','off','linewidth',2);     hold on;
+    mtexColorbar
+    Dir.Save = fullfile(Dir.Def,[ebsd.mineralList{ebsd.indexedPhasesId(i)}...
+        ' SF EBSD.png']);
+    saveas(gcf,Dir.Save); close all
+    
+    % take the active slip system and rotate it in specimen coordinates
+    sSactive = grains.meanOrientation .* sS(active);
+    % visualize the trace of the slip plane
+    quiver(grains,sSactive.trace,'color','b')
+    % visualize the trace of the slip plane
+    quiver(grains,sSactive.trace,'color','b')
+    % and the slip direction
+    quiver(grains,sSactive.b,'color','r')
+    hold off
+    Dir.Save = fullfile(Dir.Def,[ebsd.mineralList{ebsd.indexedPhasesId(i)}...
+        ' SF EBSD Dir.png']);
+    saveas(gcf,Dir.Save); close all    
+
+%% Dislocation Tensor
+%As each dislocation corresponds to an deformation of the atom lattice a 
+%dislocation can also be described by a deformation matrix. This matrix is 
+%the dyadic product between the Burgers vector and the line vector and can 
+%be computed by
+dS.tensor
+
+%% Schmid Factor
+r = normalize(vector3d(1,2,3)); % tension direction 1,2,3
+tau = dot(d,r,'noSymmetry') * dot(n,r,'noSymmetry');
+
+% plot the Schmid factor in dependency of the tension direction
+SF = sS.SchmidFactor;  plot(SF) 
+Dir.Save = fullfile(Dir.Def,[ebsd.mineralList{ebsd.indexedPhasesId(i)}...
+    ' SF.png']);
+saveas(gcf,Dir.Save); close all
+
+% find the tension directions with the maximum Schmid factor
+[myData.SFMaxT,myData.posT] = max(SF); 
+sigma = stressTensor.uniaxial(vector3d.Z);
+myData.stressT=sS.SchmidFactor(sigma);
+
+
+sSAll = sS.symmetrise('antipodal'); % all active slip system
+tauAll = sSAll.SchmidFactor(r);
+[tauMax,id] = max(abs(tauAll));
+myData.StressSystemT=sSAll(id);
+contourf(r,tauMax)
+mtexColorbar
+Dir.Save = fullfile(Dir.Def,[ebsd.mineralList{ebsd.indexedPhasesId(i)}...
+    ' Max T SF.png']);
+saveas(gcf,Dir.Save); close all
+
+rAll = plotS2Grid('resolution',0.5*degree,'upper'); %in compression
+tauAll = sSAll.SchmidFactor(rAll);
+[tauMax,id] = max(abs(tau),[],2);
+myData.StressSystemC=sSAll(id);
+contourf(r,tauMax)
+mtexColorbar
+Dir.Save = fullfile(Dir.Def,[ebsd.mineralList{ebsd.indexedPhasesId(i)}...
+    ' Max C SF.png']);
+saveas(gcf,Dir.Save); close all
+
+%% Strain Tensors
+eps = strainTensor(diag([1,0,-1]));
+epsCrystal = inv(grains.meanOrientation) * eps;
+[M, b, mori] = calcTaylor(epsCrystal, sS);
+plot(grains,M,'micronbar','off'); hold on
+mtexColorbar;
+Dir.Save = fullfile(Dir.Def,[ebsd.mineralList{ebsd.indexedPhasesId(i)}...
+    ' TF.png']);
+saveas(gcf,Dir.Save); close all
+
+[ bMax , bMaxId ] = max( b , [ ] , 2 ) ;
+sSGrains = grains.meanOrientation .* sS(bMaxId) ;
+quiver ( grains , sSGrains.b);
+quiver ( grains , sSGrains.trace);
+hold off
+Dir.Save = fullfile(Dir.Def,[ebsd.mineralList{ebsd.indexedPhasesId(i)}...
+    ' TF Dir.png']);
+saveas(gcf,Dir.Save); close all
+end
