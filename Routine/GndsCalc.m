@@ -1,9 +1,9 @@
-function [Dir]=GndsCalc(Dir,CS,ebsd,grains)
+function [GND]=GndsCalc(Dirpath,CS,ebsd,grains)
 clc; warning('off'); close all;
-Dir.Def = fullfile(Dir.path,'Deformation');     mkdir(Dir.Def);
+DirDef = fullfile(Dirpath,'Deformation');     mkdir(DirDef);
 setMTEXpref('defaultColorMap',WhiteJetColorMap) 
 
-if length(grains.id)<3000
+% try
 %% denoise orientation data
 %noisy orientation data lead to overestimate the GND density we apply sime
 % denoising techniques to the data.
@@ -27,17 +27,17 @@ plot(EbsdDenoised(EbsdDenoised.mineralList{EbsdDenoised.indexedPhasesId(i)}),...
     ipfKey.orientation2color(EbsdDenoised(EbsdDenoised.mineralList...
     {EbsdDenoised.indexedPhasesId(i)}).orientations),'micronBar','off'); hold on
 end
-plot(grains.boundary,'linewidth',2); hold off; set(gcf,'position',[500,100,950,700]);
-Dir.Save = fullfile(Dir.Def,'Constrained Rotation.png');
-saveas(gcf,Dir.Save); close all
+plot(grains.boundary,'linewidth',2); hold off; %set(gcf,'position',[500,100,950,700]);
+DirSave = fullfile(DirDef,'Constrained Rotation.png');
+saveas(gcf,DirSave); close all
 
 %% cal. Gnds
 %dislocation density tensor
 newMtexFigure('nrows',3,'ncols',3);
 for i=1:length(EbsdDenoised.indexedPhasesId)
-    Dir.GNDsGrid{i} =EbsdDenoised(EbsdDenoised.mineralList...
+    GNDsGrid{i} =EbsdDenoised(EbsdDenoised.mineralList...
                 {EbsdDenoised.indexedPhasesId(i)}).gridify;
-    kappa=Dir.GNDsGrid{i}.curvature;  % compute the curvature tensor
+    kappa = GNDsGrid{i}.curvature;  % compute the curvature tensor
     alpha = kappa.dislocationDensity;
 % The central idea of Pantleon is that the dislocation density tensor is build up
 %  by single dislocations with different densities such that the total energy is  
@@ -52,9 +52,9 @@ for i=1:length(EbsdDenoised.indexedPhasesId)
 % frame while the dislocation densitiy tensors are given with respect to the
 % specimen reference frame. Hence, to make them compatible we have to rotate the
 % dislocation tensors into the specimen reference frame as well. This is done by
-    dSRot = Dir.GNDsGrid{i}.orientations * dS;
+    dSRot = GNDsGrid{i}.orientations * dS;
     [rho,factor] = fitDislocationSystems(kappa,dSRot);
-    Dir.GNDs{i}=factor*sum(abs(rho.*dSRot.u),2);    
+    GNDs{i}  = factor*sum(abs(rho.*dSRot.u),2);    
     % the restored dislocation density tensors
     alpha = sum(dSRot.tensor .* rho,2);
     % we have to set the unit manualy since it is not stored in rho
@@ -65,7 +65,7 @@ for i=1:length(EbsdDenoised.indexedPhasesId)
     for ii = 1:3
         for j = 1:3
             nextAxis(ii,j)
-            plot(Dir.GNDsGrid{i},kappa{ii,j},'micronBar','off'); hold on;
+            plot(GNDsGrid{i},kappa{ii,j},'micronBar','off'); hold on;
              plot(grains.boundary,'linewidth',2); hold off
         end
     end
@@ -73,31 +73,37 @@ for i=1:length(EbsdDenoised.indexedPhasesId)
 end  
 % unify the color rage  - you may also use setColoRange equal
 % colormap(jet(256));,
-setColorRange([-0.005,0.005]);  set(gcf,'position',[200,10,1550,1050]);
-Dir.Save = fullfile(Dir.Def,'Rotation Tensors.fig');  saveas(gcf,Dir.Save);
+[StepSize] = CalcStepSize(ebsd);
+setColorRange([-0.005,0.005]);      %set(gcf,'position',[200,10,1550,1050]);
+DirSave = fullfile(DirDef,'Rotation Tensors.fig');  saveas(gcf,DirSave);
 mtexColorbar('title',['Rotation tensors, \omega (rad) with Step Size = '...
-    num2str(Dir.StepSize) ' \mum']);
-Dir.Save = fullfile(Dir.Def,' Rotation Tensors.png');  saveas(gcf,Dir.Save); 
+    num2str(StepSize) ' \mum'],'fontsize',20);
+DirSave = fullfile(DirDef,'Rotation Tensors.png');  saveas(gcf,DirSave); 
 close all;
 
 %% The total dislocation energy
 for i=1:length(EbsdDenoised.indexedPhasesId)
-  plot(Dir.GNDsGrid{i},Dir.GNDs{i}); hold on 
+  plot(GNDsGrid{i},log10(GNDs{i})); hold on 
   %clear GNDsGrid
 end
-colormap(jet(256));     set(gcf,'position',[500,100,950,700]);
-set(gca,'ColorScale','log'); % this works only starting with Matlab 2018a
-set(gca,'CLim',[10^13 10^15.5]);
-Dir.Save = fullfile(Dir.Def,'GNDs.fig'); saveas(gcf,Dir.Save); 
+colormap(jet(256));     %set(gcf,'position',[500,100,950,700]);
+% set(gca,'ColorScale','log'); % this works only starting with Matlab 2018a
+set(gca,'CLim',[14 15.5]);
+DirSave = fullfile(DirDef,'GNDs.fig');        saveas(gcf,DirSave); 
 % mtexColorMap('hot'); 
 plot(grains.boundary,'linewidth',2,'micronbar','on'); hold off
-title(['Step Size = ' num2str(Dir.StepSize) '\mum']);
+title(['Step Size = ' num2str(StepSize) '\mum']);
 mtexColorbar('title','GNDs density (m/m^{3}), Logarithmic scale','fontsize',20)
-Dir.Save = fullfile(Dir.Def,'GNDs.png'); saveas(gcf,Dir.Save); close all
+DirSave = fullfile(DirDef,'GNDs.png'); saveas(gcf,DirSave); close all
 
-else
-fprintf('\n\n No GNDs will be calculated .. because the Array exceeds maximum\n');
-fprintf(' array size preference. Creation of arrays greater than this limit\n');
-fprintf(' may take a long time and cause MATLAB to become unresponsive.\n\n');  
-end
+%% re-arange GNDS
+[GND.total] = cells2map(GNDs,ebsd);
+GND.Cell = GNDs;
+
+% catch 
+% fprintf('\n\n No GNDs will be calculated .. because the Array exceeds maximum\n');
+% fprintf(' array size preference. Creation of arrays greater than this limit\n');
+% fprintf(' may take a long time and cause MATLAB to become unresponsive.\n\n');  
+% GND = []; 
+% end
 

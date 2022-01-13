@@ -1,19 +1,24 @@
 function [ebsdfiltered,CSOut,grains]=IndexAndFill(ebsd,CS)
-%% smooth USING grain boundray
-[grains,ebsd.grainId,ebsd.mis2mean] = calcGrains(ebsd('indexed'),'angle',7.5*degree);
-ebsd(grains(grains.grainSize <= 3)) = [];        % remove small grains
-F           = halfQuadraticFilter;   	F.alpha = 0.01;         F.eps = 0.001;
-ebsd        = smooth(ebsd('indexed'),F,'fill',grains);
-F           = meanFilter;           	ebsd   = smooth(ebsd,F);            
-ebsdIndexed = ebsd('indexed');          CS(1)=[]; 
+
+%Smooth
+% F    = halfQuadraticFilter;   	F.alpha = 0.01;         F.eps = 0.001;
+% ebsd = smooth(ebsd('indexed'),F);
+% F    = meanFilter;           	 ebsd  = smooth(ebsd,F);
+         
+% if length(ebsd('notIndexed'))/length(ebsd)*100 <2.5
+%     ebsd = fill(ebsd);
+% end
+% [ebsd] = clean4fem(ebsd);           
+CS(1) = [];     %ebsd = ebsd('indexed'); 
+% ebsd = ebsd('indexed'); 
+% ebsd = fill(ebsd);
 
 counter=0;
-for i=1:length(ebsdIndexed.indexedPhasesId)
-    if length(ebsdIndexed(ebsdIndexed.mineralList{ebsdIndexed.indexedPhasesId(i)}))...
-            /length(ebsdIndexed)*100>2.5
+for i=1:length(ebsd.indexedPhasesId)
+    if length(ebsd(ebsd.mineralList{ebsd.indexedPhasesId(i)}))...
+            /length(ebsd)*100>1
         for ii=1:length(CS)
-            if length(ebsdIndexed.mineralList{ebsdIndexed.indexedPhasesId(i)})...
-                    == length(CS{ii}.mineral)
+            if sum(strfind(ebsd.mineralList{ebsd.indexedPhasesId(i)},CS{ii}.mineral))
                 counter = counter+1;          
                 CSOut{counter}=CS{ii};
             end
@@ -22,35 +27,38 @@ for i=1:length(ebsdIndexed.indexedPhasesId)
 end
 
 if counter      == 1
-    ebsdfiltered = ebsdIndexed(CSOut{1}.mineral);
+    ebsdfiltered = ebsd(CSOut{1}.mineral);
     
 elseif counter  == 2
-    ebsdfiltered = [ebsdIndexed(CSOut{1}.mineral),ebsdIndexed(CSOut{2}.mineral)];
+    ebsdfiltered = [ebsd(CSOut{1}.mineral),ebsd(CSOut{2}.mineral)];
     
 elseif counter  == 3
-    ebsdfiltered = [ebsdIndexed(CSOut{1}.mineral),ebsdIndexed(CSOut{2}.mineral),...
-                    ebsdIndexed(CSOut{3}.mineral)];
+    ebsdfiltered = [ebsd(CSOut{1}.mineral),ebsd(CSOut{2}.mineral),...
+                    ebsd(CSOut{3}.mineral)];
     
 elseif counter  == 4
-    ebsdfiltered = [ebsdIndexed(CSOut{1}.mineral),ebsdIndexed(CSOut{2}.mineral),...
-                    ebsdIndexed(CSOut{3}.mineral),ebsdIndexed(CSOut{4}.mineral)];
+    ebsdfiltered = [ebsd(CSOut{1}.mineral),ebsd(CSOut{2}.mineral),...
+                    ebsd(CSOut{3}.mineral),ebsd(CSOut{4}.mineral)];
     
 elseif counter  == 5
-    ebsdfiltered = [ebsdIndexed(CSOut{1}.mineral),ebsdIndexed(CSOut{2}.mineral),...
-                    ebsdIndexed(CSOut{3}.mineral),ebsdIndexed(CSOut{4}.mineral),...
-                    ebsdIndexed(CSOut{5}.mineral)];
+    ebsdfiltered = [ebsd(CSOut{1}.mineral),ebsd(CSOut{2}.mineral),...
+                    ebsd(CSOut{3}.mineral),ebsd(CSOut{4}.mineral),...
+                    ebsd(CSOut{5}.mineral)];
     
 elseif counter  == 6
-    ebsdfiltered = [ebsdIndexed(CSOut{1}.mineral),ebsdIndexed(CSOut{2}.mineral),...
-                    ebsdIndexed(CSOut{3}.mineral),ebsdIndexed(CSOut{4}.mineral),...
-                    ebsdIndexed(CSOut{5}.mineral),ebsdIndexed(CSOut{6}.mineral)];
+    ebsdfiltered = [ebsd(CSOut{1}.mineral),ebsd(CSOut{2}.mineral),...
+                    ebsd(CSOut{3}.mineral),ebsd(CSOut{4}.mineral),...
+                    ebsd(CSOut{5}.mineral),ebsd(CSOut{6}.mineral)];
 else
-    ebsdfiltered = ebsdIndexed; %do nothing
+    ebsdfiltered = ebsd; %do nothing
 end
 
 %% grain boundray
 [grains,ebsdfiltered.grainId,ebsdfiltered.mis2mean] = ...
-    calcGrains(ebsdfiltered('indexed'),'angle',7.5*degree);
+    calcGrains(ebsdfiltered('indexed'),'angle',15*degree);
+ebsdfiltered(grains(grains.grainSize<=5)) = []; 
 grains          = grains('indexed');       
 grains.boundary = grains.boundary('indexed');
 grains          = smooth(grains,5);
+
+ebsdfiltered = fill(ebsdfiltered);

@@ -4,3 +4,5 @@ if ebsd.prop.x(2)-ebsd.prop.x(1) == 0
 else
     StepSize = abs(ebsd.prop.x(2)-ebsd.prop.x(1));
 end
+
+StepSize = round(StepSize,3);

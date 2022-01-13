@@ -1,13 +1,13 @@
-function [Dir]=SchmidTaylorEBSD(CS,ebsd,Dir,grains)
+function [sS,Schmid,SFM,mP,TraceSy]=SchmidTaylorEBSD(CS,ebsd,Misanglede,grains,Dirpath)
 clc; warning('off'); close all; 
-Dir.Def=fullfile(Dir.path,'Deformation');  mkdir(Dir.Def);
+DirDef=fullfile(Dirpath,'Deformation');  mkdir(DirDef);
 
 %% Calc.
 if length(grains)~=1 
     Operation={'Schmid','Taylor'};
 for k=1:length(Operation)
 for i=1:length(ebsd.indexedPhasesId)
-    [~,sS{i}]=decideDS(CS{i},0.3);      Dir.Ss=sS; % find slip system
+    [~,sS{i}]=decideDS(CS{i},0.3); % find slip system
     
 if k==1     % compute Schmid factor for all slip systems (Resolved shear stress)
     sigma = stressTensor.uniaxial(vector3d.Z); % or use xvector
@@ -44,31 +44,41 @@ end
     DN = sS{i}(bMaxId{k,i});        hkl=DN.n.hkl;       uvw=DN.b.uvw;
     Angles = orientation('map',Miller(sSGrains{k,i}.b,CS{i}),...
                 Miller(sSGrains{k,i}.n,CS{i})).angle./degree;
-    Dir.SFM{k,i} = table(hkl,uvw,Angles,SF{k,i},'VariableNames',...
+try
+    SFM{k,i} = table(hkl,uvw,Angles,SF{k,i},'VariableNames',...
                     {[ebsd.mineralList{ebsd.indexedPhasesId(i)} '_hkil'],...
                     [ebsd.mineralList{ebsd.indexedPhasesId(i)} '_uvtw'],...
                     'Angle',[Operation{k} '_Factor']});
     %[Dir.SFMDebat{k,i}]=debatableTrace(CS{i},hkl,uvw);
+catch err
+    warning(err.message); 
+    SFM{k,i} = table(hkl,uvw,Angles,SF{k,i},'VariableNames',...
+                    {['Material_' num2str(i) '_hkil'],...
+                    ['Material_' num2str(i) '_uvtw'],...
+                    'Angle',[Operation{k} '_Factor']});
+end
     end
 
-set(gcf,'position',[500,100,950,700]); hold off; colormap(jet(256)); 
+%set(gcf,'position',[500,100,950,700]); 
+hold off; colormap(jet(256)); 
 %mtexColorMap white2black;  % colorize grains according to  factor
-mtexColorbar('title',[Operation{k} ' Factor']); setColorRange([0,0.5+4.5*(k-1)]); 
-Dir.Save=fullfile(Dir.Def,[' ' Operation{k} ' EBSD.png']); 
-saveas(gcf,Dir.Save); close all 
+mtexColorbar('title',[Operation{k} ' Factor'],'fontsize',20); 
+setColorRange([0,0.5+4.5*(k-1)]); 
+DirSave=fullfile(DirDef,[Operation{k} ' EBSD.png']); saveas(gcf,DirSave); 
+DirSave=fullfile(DirDef,[Operation{k} ' EBSD.fig']); saveas(gcf,DirSave); close all 
 
 %% set new annotation style to display RD and ND
 for i=1:length(ebsd.indexedPhasesId)
     plot(sSGrains{k,i}.b,'smooth'); mtexColorbar;  %,'complete','upper'
-    Dir.Save = fullfile(Dir.Def,[ebsd.mineralList{ebsd.indexedPhasesId(i)}...
-                ' ' Operation{k} ' ODF.png']); saveas(gcf,Dir.Save); close all
+    DirSave = fullfile(DirDef,[ebsd.mineralList{ebsd.indexedPhasesId(i)}...
+                ' ' Operation{k} ' ODF.png']); saveas(gcf,DirSave); close all
     if k==1 % calculate schmid factor  for all slip systems
-       SFa = sS{i}.SchmidFactor;           [SFMax,Dir.Schmid{i}] = max(abs(SFa,[],2)); 
+       SFa = sS{i}.SchmidFactor;           [SFMax,Schmid{i}] = max(abs(SFa,[],2)); 
        plot(SFMax,'complete','upper');     mtexColorbar; 
-       Dir.Save = fullfile(Dir.Def,[ebsd.mineralList{ebsd.indexedPhasesId(i)}...
-                        ' MaxSF.png']); saveas(gcf,Dir.Save); close all
-    elseif k==2 % taylor
-           TaylorInverse(mori{i},SF{k,i},Dir.Def,ebsd.mineralList{ebsd.indexedPhasesId(i)});
+       DirSave = fullfile(DirDef,[ebsd.mineralList{ebsd.indexedPhasesId(i)}...
+                        ' MaxSF.png']); saveas(gcf,DirSave); close all
+%     elseif k==2 % taylor
+%            TaylorInverse(mori{i},SF{k,i},DirDef,ebsd.mineralList{ebsd.indexedPhasesId(i)});
     end
     
     if length(ebsd.indexedPhasesId)==1;   SumIt=sSGrains{k,i}.b;
@@ -77,19 +87,23 @@ for i=1:length(ebsd.indexedPhasesId)
     end
 end
 
-plot(SumIt,'smooth'); mtexColorbar; %,'complete','upper'
-Dir.Save = fullfile(Dir.Def,['Sum all phases '  Operation{k} ' ODF.png']); 
-saveas(gcf,Dir.Save); close all
+plot(SumIt,'smooth');                   mtexColorbar; %,'complete','upper'
+DirSave = fullfile(DirDef,['Sum all phases '  Operation{k} ' ODF.png']); 
+saveas(gcf,DirSave); close all
 
 if k==1 %m' calculations
         %mPSlip(grains,sSGrains{1,:},sS,Dir.Def) 5does not work
         %SlipTransmission(ebsd,sSGrains,Dir.Def,grains);
-        [Dir.TraceSy]=findslipplane(Dir,0); %best fit
-        [Dir.mP,Dir.mPgb,Dir.mPebsd]=SlipTransmission2(ebsd,sS,Dir.Def);
+        [TraceSy] = findslipplane(SFM,Misanglede,0); %best fit
+        try
+            [mP]  = SlipTransmission2(ebsd,sS,DirDef); 
+        catch
+            mP =[];
+        end
 end
-Dir.SlipSy=sS;
 end
 else
     fprintf('there is no boundray to to calculate global Schmid and Taylor factors\n');
     fprintf(' Try calculating local Schmid factor\n');
+    sS = []; Schmid= []; SFM =[]; mP =[]; TraceSy=[];
 end

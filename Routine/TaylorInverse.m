@@ -1,8 +1,8 @@
 function TaylorInverse(mori,SF,Dir,name)
-        plot(mori,SF,'smooth','complete','upper')
-DirSave = fullfile(Dir,[name ' Ori IPF.fig']);
-        saveas(gcf,DirSave); close all
-        
+%         plot(mori,SF,'smooth','complete','upper')
+% DirSave = fullfile(Dir,[name ' Ori IPF.fig']);
+%         saveas(gcf,DirSave); close all
+%         
         h=[Miller(1,1,0,mori.CS),Miller(1,1,1,mori.CS),...
             Miller(0,0,1,mori.CS)]; 
         plotPDF(mori,h,'smooth','complete','upper');

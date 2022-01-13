@@ -1,5 +1,5 @@
 %% Import Script for EBSD Data
-close all, clear, clc
+close all; clear; clc
 warning('off')
 %
 % This script was automatically created by the import wizard. You should

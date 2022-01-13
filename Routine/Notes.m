@@ -16,9 +16,9 @@ import_wizard('EBSD')
 plotPDF(ebsd('q').orientations,hs) %better tahn ods
 
 %%
-oM = ipfHSVKey(ebsd('q').CS);
-refv=oM.inversePoleFigureDirection;
-col=oM.orientation2color(ebsd('q').orientations);
+oM   = ipfHSVKey(ebsd('q').CS);
+refv = oM.inversePoleFigureDirection;
+col  = oM.orientation2color(ebsd('q').orientations);
 plot(ebsd('q'),col)
 nextAxis
 plotIPDF(ebsd('q').orientations,col,refv,'MarkerSize',2) % how to but the legend as a picture
