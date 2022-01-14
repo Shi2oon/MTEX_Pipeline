@@ -3,7 +3,7 @@ clc;    warning('off'); tic; close all
 % addpath('P:\Abdo\GitHub\MyEBSD\Routine');   startup_mtex;
 set(0, 'DefaultFigureVisible', 'on');       set(0,'defaultAxesFontSize',25)
 addpath([pwd '\Routine'])
-if exist([erase(fname,'.ctf') '.mat'],'file')
+if exist([erase(fname,'.ctf') '.mat'],'file') && ~contains(fname,'XEBSD')
     load([erase(fname,'.ctf') '.mat']);  
 end
 if ~exist('STEP','var')
