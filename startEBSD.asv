@@ -55,9 +55,9 @@ while STEP<11
                              CS{ebsd.indexedPhasesId(iv)}.mineral = 'Nickel-cubic';
                 end
             end
-        setMTEXpref('xAxisDirection','east');% west for bruker
+        setMTEXpref('xAxisDirection','west');
         setMTEXpref('yAxisDirection','south');
-        setMTEXpref('zAxisDirection','outOfPlane');% inplane for bruker
+        setMTEXpref('zAxisDirection','intoPlane');
 
 %% MyMTEx
 %{
