@@ -17,7 +17,7 @@ The code gives: 1) EBSD maps with some statistics (I can add more as required).
 
 6) Local schmid factor (see: https://doi.org/10.1016/j.actamat.2016.12.066)
 
-7) GNDs
+7) Hough-based GNDs
 
 8) Anisotropic stiffness matrix, including Young modulus, Posion ration, and shear modulus 
 9) create an abaqus module (have not used for a while, may need some changes) 
