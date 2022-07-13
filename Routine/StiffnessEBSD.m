@@ -23,14 +23,7 @@ csGlaucophane = crystalSymmetry(CS.pointGroup,'mineral',CS.mineral);
 % getting the stifness values, make sure the name is consistent with the
 % function
 stiffvalues   = lStiffness(CS.mineral);%in GPa
-% define the tensor
-CGlaucophane = stiffnessTensor(stiffvalues,csGlaucophane);
-C{iGrain}.E  = CGlaucophane.YoungsModulus(vector3d.X);
-C{iGrain}.nu = CGlaucophane.PoissonRatio(vector3d.X,vector3d.Z); % in plane
-C{iGrain}.G  = CGlaucophane.shearModulus(vector3d.X,vector3d.Y); %in-plane shear
-% plotSection(CGlaucophane.PoissonRatio(vector3d.Z),vector3d.Z,'color','interp','linewidth',5)
-% mtexColorbar
-
+%{
 % %MTEX includes an automatic halfwidth selection algorithm for pecris
 % deLaValeePoussinKernel cacluations 
     PsI    = calcKernel(ebsd(grains(iGrain)).orientations); % using all points
@@ -53,11 +46,21 @@ C{iGrain}.T =(C{iGrain}.Voigt+C{iGrain}.Reuss+C{iGrain}.Hill)/3;
 % plotPDF(odfEpidote,h); %,'antipodal','COMPLETE'
 % CLim(gcm,'equal'); % set equal color range to all plots
 % mtexColorbar 
+%}
 
 C{iGrain}.R = grains(iGrain).meanOrientation.matrix;
 C{iGrain}.xEBSD = xEBSDV3(C{iGrain}.R,stiffvalues);%in GPa
-C{iGrain}.Korsunsky = Korsunsky_StiffnessRot(C{iGrain}.R,stiffvalues);%in GPa
+C{iGrain}.Stiffness = Korsunsky_StiffnessRot(C{iGrain}.R,stiffvalues);%in GPa
 C{iGrain}.Dunne = Dunne_StiffnessRot(C{iGrain}.R,stiffvalues);%in GPa
+
+% define the tensor
+CGlaucophane = stiffnessTensor(C{iGrain}.Stiffness ,csGlaucophane);
+C{iGrain}.E  = CGlaucophane.YoungsModulus(vector3d.X);
+C{iGrain}.nu = CGlaucophane.PoissonRatio(vector3d.X,vector3d.Z); % in plane
+C{iGrain}.G  = CGlaucophane.shearModulus(vector3d.X,vector3d.Y); %in-plane shear
+% plotSection(CGlaucophane.PoissonRatio(vector3d.Z),vector3d.Z,'color','interp','linewidth',5)
+% mtexColorbar
+
 end
 end
 

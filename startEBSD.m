@@ -92,7 +92,7 @@ while STEP<11
             [GND]       = GndsCalc(path,CS,ebsd,grains);                                % Gnds
             STEP = 9;
         case 9
-            [Stiffness] = StiffnessEBSD(CS,ebsd,hw);
+            [Stiffness] = StiffnessEBSD(ebsd);
             STEP = 10;
         case 10
             if exist([erase(fname,'.ctf') '_XEBSD.mat']) ~= 0
