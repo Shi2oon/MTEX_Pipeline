@@ -2,7 +2,7 @@ Install mtex included with program as I did few edits to MTEX itself and yet to 
 
 all you need to do then is run the startEBSD function as below
 
-startEBSD('full directory of the .ctf' file)
+startEBSD('full directory of the .ctf file')
 
 This MTEX analysis pipeline for data from Oxford system (I think I got the orientation right but please have a play with it using your data and let me know. For know it accommodates austenite, ferrite,  moissanite, silicon ad Nikel (all cubic) but can be modified to include more and more materials maybe hexagonal.
 
