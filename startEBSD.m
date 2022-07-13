@@ -64,16 +64,16 @@ while STEP<11
             [ebsd,CS,grains,MisGB,Misanglede,TwinedArea] = GBs(ebsd,path,CS);     % EBSD map and GB related
             STEP = 3;
         case 3
-%             [hw,odf,ODFerror] = PoleFigures(path,CS,ebsd,grains);	% (1/100*100%) = 1 from all points
+            [hw,odf,ODFerror] = PoleFigures(path,CS,ebsd,grains);	% (1/100*100%) = 1 from all points
             STEP = 4;
         case 4
             [SF,sS,SFM,mP,TraceSy] = SchmidTaylorEBSD(CS,ebsd,Misanglede,grains,path); % taylor and schmid
             STEP = 5;
         case 5
-            %         PlotCrystalShape(ebsd,CS,grains,MisGB,Misanglede,sS,path); % crystal in ebsd map
+                    PlotCrystalShape(ebsd,CS,grains,MisGB,Misanglede,sS,path); % crystal in ebsd map
             STEP = 6;
         case 6
-            if length(grains)<9
+            if length(grains)<4
                 for iV =1:length(grains)
                     Direction = {'X','Z'};
                     for IO = 1:length(Direction)
@@ -87,7 +87,7 @@ while STEP<11
         case 7
             [~,LSF]     = Local_SF(CS,ebsd,grains,path);                                % LSF
             STEP = 8;
-            %{
+            %
         case 8
             [GND]       = GndsCalc(path,CS,ebsd,grains);                                % Gnds
             STEP = 9;

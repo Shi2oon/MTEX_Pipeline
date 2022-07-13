@@ -14,7 +14,7 @@ for i=1:length(ebsd.indexedPhasesId)
     %MTEX includes an automatic halfwidth selection algorithm
     PsI    = calcKernel(ebsd(ebsd.mineralList{ebsd.indexedPhasesId(i)}).orientations);
     Psi    = calcKernel(grains(ebsd.mineralList{ebsd.indexedPhasesId(i)}).meanOrientation);
-    [hw]   = erroOPFe(DirPoleF,CS{i},PsI,Psi);
+    [hw]   = erroOPFe(DirPoleF,CS{ebsd.indexedPhasesId(i)},PsI,Psi);
     odf{i} = calcODF(ebsd(ebsd.mineralList{ebsd.indexedPhasesId(i)}).orientations,'kernel',hw);
     h      = [Miller(1,1,0,odf{i}.CS),Miller(1,1,1,odf{i}.CS),Miller(0,0,1,odf{i}.CS),Miller(1,1,2,odf{i}.CS)]; %,...
     %Miller(2,1,1,odf{i}.CS)];
@@ -124,16 +124,16 @@ for i=1:length(ebsd.indexedPhasesId)
     %     Entropy      = round(entropy(odf{i}),3);
     
     %% Plotting symmetry
-    plotHKL(CS{i},'projection','edist','upper','grid_res',...
+    plotHKL(CS{ebsd.indexedPhasesId(i)},'projection','edist','upper','grid_res',...
         15*degree,'BackGroundColor','w');               hold on
     plotPDF(odf_model,h(3),'grid','grid_res','antipodal');
-    plotHKL(CS{i},'projection','edist','upper','grid_res',...
+    plotHKL(CS{ebsd.indexedPhasesId(i)},'projection','edist','upper','grid_res',...
         15*degree,'BackGroundColor','w');               hold off
     %annotate(center,'marker','s','MarkerFaceColor','black')
     % title(['001 w/ phi1 = ' num2str(center.phi1) ' .. Phi = ' num2str(center.Phi)...
     %     ' .. phi2 = ' num2str(center.phi2)]);
     title(['\{001\} w/ Angle = ' num2str(round(orientation.byEuler(center.phi1,center.Phi,...
-        center.phi2,CS{i}).angle./degree),3) '^{o}']);
+        center.phi2,CS{ebsd.indexedPhasesId(i)}).angle./degree),3) '^{o}']);
     
     DirSave = fullfile(DirPoleF,[ebsd.mineralList{ebsd.indexedPhasesId(i)} ...
         ' Symmetry.png']);  saveas(gcf,DirSave);   close all
