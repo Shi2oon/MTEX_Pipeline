@@ -1,4 +1,4 @@
-function [lineData,lengthslope]=LineMisorentation(ebsd,dir)
+function [lineData,lengthslope,ebsd_line]=LineMisorentation(ebsd,dir)
 %% plot
 close all
 [grains,ebsd.grainId,ebsd.mis2mean] = calcGrains(ebsd('indexed'),'angle',2.5*degree); 
@@ -44,3 +44,4 @@ title('Misorientaion Profile alone the line'); box off;
 xlim([0 inf]); ylim([0 inf])
 saveas(gcf,fullfile(dir,'lineddata_Mis.fig'));  
 saveas(gcf,fullfile(dir,'lineddata_Mis.tif')); close 
+save([dir\"EBSDLine.m"],'lineData','lengthslope','ebsd_line')

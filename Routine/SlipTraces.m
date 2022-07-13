@@ -16,10 +16,12 @@ elseif  strcmpi(CS.mineral,'Moissanite 6H') ||...
         strcmpi(CS.mineral,'Moissanite')
     CS.opt.type='fcc';
     CS.mineral = 'Moissanite';
-elseif  strcmpi(CS.mineral,'Moissanite')
+elseif  strcmpi(CS.mineral,'Ni-superalloy') ||...
+        strcmpi(CS.mineral,'Ni') ||...
+        strcmpi(CS.mineral,'Nickel-cubic')
     CS.opt.type='fcc';
+    CS.mineral = 'Nickel-cubic';
 end
-
 %%
 [~,sS]     = decideDS(CS,0.3);     % find slip system
 if direction == 'X' || direction == 'x'
@@ -108,9 +110,20 @@ saveas(gcf,[fname,'_trace_' direction '.tif']);
 %% plot
 close all;  colormap('jet');    cc = jet(length(sSlocal));
 SOF = sort(abs(SF),'descend');
-for i=1:length(sSlocal)
-    noM(i)=ind2sub(size(SF),find(abs(SF)==SOF(i)));
+i=0;
+while i < length(sSlocal)
+    i = i+1;
+    if length(ind2sub(size(SF),find(abs(SF)==SOF(i))))==1
+       noM(i)=ind2sub(size(SF),find(abs(SF)==SOF(i)));
+    else
+          OtM=ind2sub(size(SF),find(abs(SF)==SOF(i)));
+        for iP=1:length(OtM)
+            noM(i+iP-1) = OtM(iP);
+        end
+        i = i+iP-1;
+    end
 end
+
 SF = round(SF,3);
 count=0;
 for i=noM

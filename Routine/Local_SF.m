@@ -4,7 +4,7 @@ DirDef=fullfile(path,'Deformation');  mkdir(DirDef);
 
 %% Calc.
 for i=1:length(ebsd.indexedPhasesId)
-    [~,sS{i}] = decideDS(CS{i},0.3); % find slip system
+    [~,sS{i}] = decideDS(CS{ebsd.indexedPhasesId(i)},0.3); % find slip system
    
     sigma  = stressTensor.uniaxial(vector3d.X); % or use xvector
     LSF{i} = sS{i}.SchmidFactor(inv(ebsd(ebsd.mineralList...
