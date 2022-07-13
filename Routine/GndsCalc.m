@@ -44,7 +44,7 @@ for i=1:length(EbsdDenoised.indexedPhasesId)
 % minimum. Depending on the attomic lattice different dislocattion systems  
 % have to be considered. Those principle dislocations are defined
 % in MTEX either by their Burgers and line vectors or by
-        [dS,~] = decideDS(CS{i}, 0.3); % nu = 0.3; %poisson ratio
+        [dS,~] = decideDS(CS{ebsd.indexedPhasesId(i)}, 0.3); % nu = 0.3; %poisson ratio
 
 %Note that the unit of this tensors is the same as the unit used for describing 
 %the length of the unit cell, which is in most cases Angstrom (au). Furthremore,

@@ -11,7 +11,7 @@ for i=1:length(ebsd.indexedPhasesId)
     
     isBig{i} = gB.grainSize > round(sum(grains.grainSize)*0.0001); % find the big ones   
     if sum(isBig{i})~=0
-    [cS{i},xx(i)] = findShape(CS{i},i);
+    [cS{i},xx(i)] = findShape(CS{ebsd.indexedPhasesId(i)},i);
     if xx(i)==0
         plot(gB(isBig{i}),0.6 * cS{i},'FaceColor','light blue')
         plot(gB(isBig{i}),0.4 * cS{i},'FaceColor','none','linewidth',2)
@@ -29,7 +29,8 @@ mtexColorbar('title','Misorientation Angle^{o}');      colormap(jet(256));  hold
 DirSave = fullfile(DirDef,'Cystals ebsd.tif');        saveas(gcf,DirSave);
 
 %%
-[mp,gb]=SlipTransmission2(ebsd,sS);
+try
+[mp,gb]=SlipTransmission2(ebsd,sS,DirDef);
 for i=1:length(ebsd.indexedPhasesId)
     plot(grains(ebsd.mineralList{ebsd.indexedPhasesId(i)})...
         ,grains(ebsd.mineralList{ebsd.indexedPhasesId(i)}).meanOrientation); hold on
@@ -39,7 +40,7 @@ for i=1:length(ebsd.indexedPhasesId)
     
   if sum(isBig{i})~=0
     % crystal shape         plot(cS)
-    [cS{i},xx(i)] = findShape(CS{i},i);
+    [cS{i},xx(i)] = findShape(CS{ebsd.indexedPhasesId(i)},i);
     if xx(i)==0
 %         plot(gB(isBig{i}),0.6 * cS{i},'FaceColor','light blue')
         plot(gB(isBig{i}),0.4 * cS{i},'FaceColor','none','linewidth',2,'micronBar','off')
@@ -52,7 +53,7 @@ setColorRange([0,1]);
 mtexColorbar('title','Slip Transmission (m^, )','fontsize',20);
 DirSave=fullfile(DirDef,'mP2.fig');             saveas(gcf,DirSave);       
 DirSave=fullfile(DirDef,'mP2.tif');             saveas(gcf,DirSave);  close all
-
+end
 %%
 for i=1:length(ebsd.indexedPhasesId)
     gB=grains(ebsd.mineralList{ebsd.indexedPhasesId(i)});
@@ -60,7 +61,7 @@ for i=1:length(ebsd.indexedPhasesId)
     
   if sum(isBig{i})~=0
     % crystal shape         plot(cS)
-    [cS{i},xx(i)] = findShape(CS{i},i);
+    [cS{i},xx(i)] = findShape(CS{ebsd.indexedPhasesId(i)},i);
     if xx(i)==0
 %         plot(gB(isBig{i}),0.6 * cS{i},'FaceColor','light blue')
         plot(gB(isBig{i}),0.4 * cS{i},'FaceColor','none','linewidth',8,'micronBar','off')
