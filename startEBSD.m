@@ -15,7 +15,7 @@ end
 
 %% prep
 % path = pname; % path = fullfile(pname,name); %
-while STEP<11
+while STEP<12
     switch STEP
         case 1
             path = erase(fname, '.ctf');         mkdir(path);
@@ -60,19 +60,19 @@ while STEP<11
             setMTEXpref('zAxisDirection','intoPlane');% outOfPlane for bruker
             STEP = 2;
 
-        case 2
+        case 2 % EBSd maps
             [ebsd,CS,grains,MisGB,Misanglede,TwinedArea] = GBs(ebsd,path,CS);     % EBSD map and GB related
             STEP = 3;
-        case 3
+        case 3 % IPF and pole figures 
             [hw,odf,ODFerror] = PoleFigures(path,CS,ebsd,grains);	% (1/100*100%) = 1 from all points
             STEP = 4;
-        case 4
+        case 4 % Schmid and Taylor factors 
             [SF,sS,SFM,mP,TraceSy] = SchmidTaylorEBSD(CS,ebsd,Misanglede,grains,path); % taylor and schmid
             STEP = 5;
-        case 5
+        case 5 % 
                     PlotCrystalShape(ebsd,CS,grains,MisGB,Misanglede,sS,path); % crystal in ebsd map
             STEP = 6;
-        case 6
+        case 6 % traces
             if length(grains)<4
                 for iV =1:length(grains)
                     Direction = {'X','Z'};
@@ -84,24 +84,25 @@ while STEP<11
             end
             %
             STEP = 7;
-        case 7
+        case 7 % local SF: https://doi.org/10.1016/j.actamat.2016.12.066
             [~,LSF]     = Local_SF(CS,ebsd,grains,path);                                % LSF
             STEP = 8;
             %
-        case 8
+        case 8 % GNDS
             [GND]       = GndsCalc(path,CS,ebsd,grains);                                % Gnds
             STEP = 9;
-        case 9
+        case 9 % Stifness per grain
             [Stiffness] = StiffnessEBSD(ebsd);
             STEP = 10;
-        case 10
-            if exist([erase(fname,'.ctf') '_XEBSD.mat']) ~= 0
-                load([erase(fname,'.ctf') '.mat']);
-                [Maps] = loadingXEBSD([erase(fname,'.ctf') '_XEBSD.mat']);
-                if exist('Stiffness')~=0
-                    Maps.C4D = Stiffness; % computed stifness
-                end
-            end
+        case 10 % HR-ESBD merge
+%             if exist([erase(fname,'.ctf') '_XEBSD.mat']) ~= 0
+%                 load([erase(fname,'.ctf') '.mat']);
+%                 [Maps] = loadingXEBSD([erase(fname,'.ctf') '_XEBSD.mat']);
+%                 if exist('Stiffness')~=0
+%                     Maps.C4D = Stiffness; % computed stifness
+%                 end
+%             end
+            STEP = 11;
         case 11
             if length(CS)>1 && length(CS)<10
                 if strcmpi(CS{1},'notIndexed')
@@ -117,7 +118,7 @@ while STEP<11
             %}
             STEP = 12;
     end
-    save([erase(fname,'.ctf') '_EBSD.mat']);
+    save([erase(fname,'.ctf') '_EBSD.mat']); close all
 
 end
 %% the end

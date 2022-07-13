@@ -49,7 +49,7 @@ fprintf('WARNING! EBSD had %d non-indexed pixels and so was filled using fill fu
     step(2) = dxy(2);
     step(3) = min(dxy); 
     % set inp file name
-    inpFileName = [erase(fname,'.ctf') '.inp'];
+    inpFileName = [erase(fname,'.ctf') '\abaqus.inp'];
     
     % reconstruct grains
     [~,ebsd.grainId,ebsd.mis2mean] = calcGrains(ebsd,'angle',10*degree);
