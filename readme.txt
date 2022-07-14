@@ -7,6 +7,8 @@ startEBSD('full directory of the .ctf file')
 This MTEX analysis pipeline for data from Oxford system (I think I got the orientation right but please have a play with it using your data and let me know. For now it accommodates austenite, ferrite, moissanite, silicon ad Nikel (all cubic) but can be modified to include more materials maybe hexagonal.
 
 
+** make sure to install the mtex included with the code as it edited to work with code, I did not push these changes to MTEX authors for approval yet .. so be patient as I'm improving this code to part of MTEX **
+
 The code gives: 1) EBSD maps with some statistics (I can add more as required).
 
 2) pole figures (won't work if MTEX is not installed properly)
