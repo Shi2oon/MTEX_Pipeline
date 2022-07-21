@@ -7,31 +7,43 @@ ebsd(grains(grains.grainSize<=50))   = [];
                     grains          = smooth(grains,5);
 gb  = grains.boundary('indexed','indexed'); %list of orientations along the boundaries
 if ~isempty(gb)
-id  = gb.ebsdId;            ebsd = ebsd(id);  %ebsd
-phv = ebsd.phase;     % phases
+id  = gb.ebsdId;            ebsdgb = ebsd(id);  %ebsd
+phv = ebsdgb.phase;     % phases
 sigma = stressTensor.uniaxial(xvector); % or use xvector
 
-for i=1:length(ebsd.indexedPhasesId)
+
+for i=1:length(ebsdgb.indexedPhasesId)
     % compute Schmid factor for all slip systems
-    sFf{i} = sS{i}.SchmidFactor(inv(ebsd(ebsd.mineralList...
-            {ebsd.indexedPhasesId(i)}).orientations) * sigma);
+    sFf{i} = sS{i}.SchmidFactor(inv(ebsdgb(ebsdgb.mineralList...
+            {ebsdgb.indexedPhasesId(i)}).orientations) * sigma);
     [sFf{i},idf] = max(sFf{i},[],2);    % find the maximum Schmidt factor
     % rotate active slip system into specimen coordinates
-    sS{i} = ebsd(ebsd.mineralList...
-            {ebsd.indexedPhasesId(i)}).orientations .* sS{i}(idf);
+    sS{i} = ebsdgb(ebsdgb.mineralList...
+            {ebsdgb.indexedPhasesId(i)}).orientations .* sS{i}(idf);
 
-    if length(ebsd.indexedPhasesId)~=1   
+    if length(ebsdgb.indexedPhasesId)~=1   
         sSphve(phv(:)==i,:) = sS{i};% and compute mprime
     else
         sSphve=sS{i};
     end
 end
 
-mp = mPrime(sSphve(1:length(sSphve)/2),sSphve(length(sSphve)/2+1:end)); % get m'
+if phv>1
+if mod(length(sSphve),2)==1
+   mp = mPrime(sSphve(1:round(length(sSphve)/2)),sSphve(round(length(sSphve)/2):end)); % get m' 
+else
+    mp = mPrime(sSphve(1:round(length(sSphve)/2)),sSphve(round(length(sSphve)/2)+1:end)); % get m' 
+end
+
+else
+    id = gb.grainId;
+    mp = mPrime(sSphve(id(:,1)),sSphve(id(:,2)));
+end
 % plot something
 plot(grains);                   hold on
 plot(gb,mp,'linewidth',3);      hold off
 colormap(jet(256));
+
 %set(gcf,'position',[500,100,950,700]);  
 setColorRange([0,1]);                          
 mtexColorbar('title','Slip Transmission (m^, )','fontsize',20);

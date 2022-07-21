@@ -5,27 +5,27 @@ function [dS,sS,dST,sST]=decideDS(CS,nu)
 % systems have to be considered.Those principle dislocations are defined in 
 % MTEX either by their Burgers and line vectors or as below
 
-if  sum(strfind(CS.lattice,'cubic'))~=0
-    if  sum(strfind(CS.opt.type,'bcc'))~=0
+if  strcmpi(CS.lattice,'cubic')
+    if  strcmpi(CS.opt.type,'bcc')
         sS = symmetrise(slipSystem.bcc(CS),'antipodal');
         %dS = dislocationSystem.bcc(CS);
         sST = symmetrise(slipSystem.bccTwin(CS),'antipodal');
         %dST = dislocationSystem.bccTwin(CS);
 
-    elseif sum(strfind(CS.opt.type,'fcc'))~=0
+    elseif strcmpi(CS.opt.type,'fcc')
         sS = symmetrise(slipSystem.fcc(CS),'antipodal');
         %dS = dislocationSystem.fcc(CS);
         sST = symmetrise(slipSystem.fccTwin(CS),'antipodal');
         %dST = dislocationSystem.fccTwin(CS);
 %         sSC = symmetrise(slipSystem.fccCrack(CS),'antipodal');
         
-    elseif sum(strfind(CS.opt.type,'fct'))~=0
+    elseif strcmpi(CS.opt.type,'fct')
         sS  = symmetrise(slipSystem.fct(CS),'antipodal');
         sST = symmetrise(slipSystem.fct(CS),'antipodal');
         %dS = dislocationSystem(sS);
     end
 
-elseif sum(strfind(CS.lattice,'hexagonal'))~=0      || sum(strfind(CS.lattice,'triclinic'))~=0
+elseif strcmpi(CS.lattice,'hexagonal') || strcmpi(CS.lattice,'triclinic')
     if any(ismember(fields(CS.opt),'hcptype'))==1
         [~,sS,~,sST] = HCPmajor(CS);
     else
@@ -35,12 +35,12 @@ elseif sum(strfind(CS.lattice,'hexagonal'))~=0      || sum(strfind(CS.lattice,'t
         %dST = dislocationSystem.hcpTwin(CS);
     end
     
-elseif sum(strfind(CS.lattice,'trigonal'))~=0 
+elseif strcmpi(CS.lattice,'trigonal')
     sS  = symmetrise(slipSystem.basal(CS),'antipodal');
     sST = symmetrise(slipSystem.basal(CS),'antipodal');
     %dS = dislocationSystem(sS);
     
-elseif sum(strfind(CS.lattice,'tetragonal'))~=0 
+elseif strcmpi(CS.lattice,'tetragonal')
     sS  = symmetrise(slipSystem.fct(CS),'antipodal');
     sST = symmetrise(slipSystem.fct(CS),'antipodal');
     %dS = dislocationSystem(sS);

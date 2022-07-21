@@ -130,7 +130,7 @@ while STEP<12
                 csa{1} = CS;    CS = csa;
             end
             ebsdfilled=fill(ebsdfilled,grainsfilled);
-            ebsdfilled = ebsdfilled('indexed');
+            if strcmpi(CS{1},'notIndexed');     CS(1) = [];     end
             ebsd2abaqus(ebsdfilled,fname)                         % Abaqus
             %}
             STEP = 12;
