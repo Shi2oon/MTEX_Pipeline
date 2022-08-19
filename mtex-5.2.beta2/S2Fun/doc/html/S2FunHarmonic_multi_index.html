@@ -1,0 +1,248 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Multivariate S2FunHarmonic</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-01-23"><meta name="DC.source" content="S2FunHarmonic_multi_index.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1><b>Multivariate <tt>S2FunHarmonic</tt></b></h1><!--introduction--><p>This site assumes you have read the documentation for univariate <tt>S2FunHarmonic</tt>, as we are not covering content which is already in there.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Structural conventions of the input and output of multivariate S2FunHarmonic</a></li><li><a href="#2">Defining a multivariate S2FunHarmonic</a></li><li><a href="#10">Operations which differ from an univariate <tt>S2FunHarmonic</tt></a></li><li><a href="#17">Visualization</a></li></ul></div><h2 id="1">Structural conventions of the input and output of multivariate S2FunHarmonic</h2><div><ul><li>the structure of the nodes is always interpreted as a column vector</li><li>the node index is the first dimension</li><li>the dimensions of the S2FunHarmonic itself is counted from the second dimension</li></ul></div><p>For example you got four nodes <img src="S2FunHarmonic_multi_index_eq17926179084054814593.png" alt="$v_1, v_2, v_3$"> and <img src="S2FunHarmonic_multi_index_eq15343079787092772057.png" alt="$v_4$"> and six functions <img src="S2FunHarmonic_multi_index_eq16376045287472918887.png" alt="$f_1, f_2, f_3, f_4, f_5$"> and <img src="S2FunHarmonic_multi_index_eq15320233978921149458.png" alt="$f_6$">, which you want to store in a 3x2 array, then the following scheme applies to function evaluations:</p><p><img src="S2FunHarmonic_multi_index_eq17112665209624934517.png" alt="$$ F(:, :, 1) = \pmatrix{f_1(v_1) &amp; f_2(v_1) &amp; f_3(v_1) \cr f_1(v_2) &amp; f_2(v_2) &amp; f_3(v_2) \cr f_1(v_3) &amp; f_2(v_3) &amp; f_3(v_3) \cr f_1(v_4) &amp; f_2(v_4) &amp; f_3(v_4)} \quad\mathrm{and}\quad F(:, :, 2) = \pmatrix{f_4(v_1) &amp; f_5(v_1) &amp; f_6(v_1) \cr f_4(v_2) &amp; f_5(v_2) &amp; f_6(v_2) \cr f_4(v_3) &amp; f_5(v_3) &amp; f_6(v_3) \cr f_4(v_4) &amp; f_5(v_4) &amp; f_6(v_4)}. $$"></p><p>For the intern Fourier-coefficient matrix the first dimension is reserved for for the Fourier-coefficients of a single function; the dimension of the functions itself begin again with the second dimension.</p><p>If <img src="S2FunHarmonic_multi_index_eq10132426415324670699.png" alt="$\bf{\hat f}_1, \bf{\hat f}_2, \bf{\hat f}_3, \bf{\hat f}_4, \bf{\hat f}_5$"> and <img src="S2FunHarmonic_multi_index_eq05650264891671257785.png" alt="$\bf{\hat f}_6$"> would be the column vectors of the Fourier-coefficients of the functions above, internally they would be stored in <img src="S2FunHarmonic_multi_index_eq14700050704426719036.png" alt="$\hat F$"> as follows. <img src="S2FunHarmonic_multi_index_eq06598518767156971297.png" alt="$$ \hat F(:, :, 1) = \pmatrix{\bf{\hat f}_1 &amp; \bf{\hat f}_2 &amp; \bf{\hat f}_3} \quad\mathrm{and}\quad \hat F(:, :, 2) = \pmatrix{\bf{\hat f}_4 &amp; \bf{\hat f}_5 &amp; \bf{\hat f}_6}. $$"></p><h2 id="2">Defining a multivariate S2FunHarmonic</h2><p><b>Definition via function values</b></p><p>At first we need some vertices</p><pre class="codeinput">nodes = equispacedS2Grid(<span class="string">'points'</span>, 1e5);
+nodes = nodes(:);
+</pre><p>Next we define function values for the vertices</p><pre class="codeinput">y = [smiley(nodes), (nodes.x.*nodes.y).^(1/4)];
+</pre><p>Now the actual command to get a 2x1 <tt>sF1</tt> of type <tt>S2FunHarmonic</tt></p><pre class="codeinput">sF1 = S2FunHarmonic.approximation(nodes, y)
+</pre><pre class="codeoutput"> 
+sF1 = S2FunHarmonic  
+ size: 2 x 1
+ bandwidth: 224
+</pre><p><b>Definition via function handle</b></p><p>If we have a function handle for the function we could create a <tt>S2FunHarmonic</tt> via quadrature. At first lets define a function handle which takes <a href="vector3d_index.html"><tt>vector3d</tt></a> as an argument and returns double:</p><pre class="codeinput">f = @(v) [exp(v.x+v.y+v.z)+50*(v.y-cos(pi/3)).^3.*(v.y-cos(pi/3) &gt; 0), v.x, v.y, v.z];
+</pre><p>Now we call the quadrature command to get 4x1 <tt>sF2</tt> of type <tt>S2FunHarmonic</tt></p><pre class="codeinput">sF2 = S2FunHarmonic.quadrature(f, <span class="string">'bandwidth'</span>, 50)
+</pre><pre class="codeoutput"> 
+sF2 = S2FunHarmonic  
+ size: 4 x 1
+ bandwidth: 50
+</pre><p><b>Definition via Fourier-coefficients</b></p><p>If you already know the Fourier-coefficients, you can simply hand them in the format above to the constructor of <tt>S2FunHarmonic</tt>.</p><pre class="codeinput">sF3 = S2FunHarmonic(eye(9))
+</pre><pre class="codeoutput"> 
+sF3 = S2FunHarmonic  
+ size: 9 x 1
+ bandwidth: 2
+</pre><div><ul><li>This command stores the nine first spherical harmonics in <tt>sF3</tt></li></ul></div><h2 id="10">Operations which differ from an univariate <tt>S2FunHarmonic</tt></h2><p><b>Some default matrix and vector operations</b></p><p>You can concatenate and refer to functions as Matlab does with vectors and matrices</p><pre class="codeinput">sF4 = [sF1; sF2];
+sF4(2:3);
+</pre><p>You can conjugate the Fourier-coefficients and transpose/ctranspose the multivariate <tt>S2FunHarmonic</tt>.</p><pre class="codeinput">conj(sF1);
+sF1.';
+sF1';
+</pre><p>Some other operations</p><pre class="codeinput">length(sF1);
+size(sF2);
+sF3 = reshape(sF3, 3, []);
+</pre><p><b><tt>sum</tt> and <tt>mean</tt></b></p><p>If you do not specify further options to <tt>sum</tt> or <tt>mean</tt> it gives you the integral or the mean value back for each function. You can also calculate the conventional sum or the meanvalue over a dimension of a multivariate <tt>S2FunHarmonic</tt>.</p><pre class="codeinput">sum(sF1, 1);
+sum(sF3, 2);
+</pre><p><b>min/max</b></p><p>If the <tt>min</tt> or <tt>max</tt> command gets a multivariate <tt>S2FunHarmonic</tt> the pointwise minimum or maximum is calculated along the first non-singelton dimension if not specified otherwise.</p><pre class="codeinput">min(sF3);
+</pre><p><b>Remark for matrix product</b></p><p>At this point the matrix product is implemented per element and not as the usual matrix product.</p><h2 id="17">Visualization</h2><p>There are different ways to visualize a multivariate <tt>S2FunHarmonic</tt></p><p>The default <tt>plot</tt>-command</p><pre class="codeinput">plot(sF1);
+</pre><img vspace="5" hspace="5" src="S2FunHarmonic_multi_index_01.png" alt=""> <div><ul><li><tt>plot(sF1)</tt> is the same same as <tt>contourf(sF1)</tt></li></ul></div><p>nonfilled contour plot</p><pre class="codeinput">contour(sF2, <span class="string">'LineWidth'</span>, 2);
+</pre><img vspace="5" hspace="5" src="S2FunHarmonic_multi_index_02.png" alt=""> <p>color plot without contours</p><pre class="codeinput">pcolor(sF3);
+</pre><img vspace="5" hspace="5" src="S2FunHarmonic_multi_index_03.png" alt=""> <p>3D plot which you can rotate around</p><pre class="codeinput">plot3d(sF2);
+</pre><img vspace="5" hspace="5" src="S2FunHarmonic_multi_index_04.png" alt=""> <p>3D plot where the radius of the sphere is transformed according to the function values</p><pre class="codeinput">surf(sF3);
+</pre><img vspace="5" hspace="5" src="S2FunHarmonic_multi_index_05.png" alt=""> <p>Plot the intersection of the surf plot with a plane with normal vector <tt>v</tt></p><pre class="codeinput">plotSection(sF1, zvector);
+</pre><img vspace="5" hspace="5" src="S2FunHarmonic_multi_index_06.png" alt=""> <p>plotting the Fourier coefficients</p><pre class="codeinput">plotSpektra(sF2);
+set(gca,<span class="string">'FontSize'</span>, 20);
+</pre><img vspace="5" hspace="5" src="S2FunHarmonic_multi_index_07.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% *Multivariate |S2FunHarmonic|*
+% This site assumes you have read the documentation for univariate |S2FunHarmonic|, as we are not covering content which is already in there.
+%
+%% Structural conventions of the input and output of multivariate S2FunHarmonic
+% * the structure of the nodes is always interpreted as a column vector
+% * the node index is the first dimension
+% * the dimensions of the S2FunHarmonic itself is counted from the second dimension
+%
+% For example you got four nodes $v_1, v_2, v_3$ and $v_4$ and six functions $f_1, f_2, f_3, f_4, f_5$ and $f_6$, which you want to store in a 3x2 array, then the following scheme applies to function evaluations:
+%
+% $$ F(:, :, 1) = \pmatrix{f_1(v_1) & f_2(v_1) & f_3(v_1) \cr f_1(v_2) & f_2(v_2) & f_3(v_2) \cr f_1(v_3) & f_2(v_3) & f_3(v_3) \cr f_1(v_4) & f_2(v_4) & f_3(v_4)} \quad\mathrm{and}\quad F(:, :, 2) = \pmatrix{f_4(v_1) & f_5(v_1) & f_6(v_1) \cr f_4(v_2) & f_5(v_2) & f_6(v_2) \cr f_4(v_3) & f_5(v_3) & f_6(v_3) \cr f_4(v_4) & f_5(v_4) & f_6(v_4)}. $$
+%
+% For the intern Fourier-coefficient matrix the first dimension is reserved for for the Fourier-coefficients of a single function; the dimension of the functions itself begin again with the second dimension.
+%
+% If $\bf{\hat f}_1, \bf{\hat f}_2, \bf{\hat f}_3, \bf{\hat f}_4, \bf{\hat f}_5$ and $\bf{\hat f}_6$ would be the column vectors of the Fourier-coefficients of the functions above, internally they would be stored in $\hat F$ as follows.
+% $$ \hat F(:, :, 1) = \pmatrix{\bf{\hat f}_1 & \bf{\hat f}_2 & \bf{\hat f}_3} \quad\mathrm{and}\quad \hat F(:, :, 2) = \pmatrix{\bf{\hat f}_4 & \bf{\hat f}_5 & \bf{\hat f}_6}. $$
+%
+%
+
+%% Defining a multivariate S2FunHarmonic
+%
+%%
+% *Definition via function values*
+%
+% At first we need some vertices
+nodes = equispacedS2Grid('points', 1e5);
+nodes = nodes(:);
+%%
+% Next we define function values for the vertices
+y = [smiley(nodes), (nodes.x.*nodes.y).^(1/4)];
+%%
+% Now the actual command to get a 2x1 |sF1| of type |S2FunHarmonic|
+sF1 = S2FunHarmonic.approximation(nodes, y)
+
+%%
+% *Definition via function handle*
+%
+% If we have a function handle for the function we could create a |S2FunHarmonic| via quadrature.
+% At first lets define a function handle which takes <vector3d_index.html |vector3d|> as an argument and returns double:
+
+f = @(v) [exp(v.x+v.y+v.z)+50*(v.y-cos(pi/3)).^3.*(v.y-cos(pi/3) > 0), v.x, v.y, v.z];
+%% 
+% Now we call the quadrature command to get 4x1 |sF2| of type |S2FunHarmonic|
+sF2 = S2FunHarmonic.quadrature(f, 'bandwidth', 50)
+
+%%
+% *Definition via Fourier-coefficients*
+%
+% If you already know the Fourier-coefficients, you can simply hand them in the format above to the constructor of |S2FunHarmonic|.
+
+sF3 = S2FunHarmonic(eye(9))
+
+%%
+% * This command stores the nine first spherical harmonics in |sF3|
+
+
+%% Operations which differ from an univariate |S2FunHarmonic|
+%
+%%
+% *Some default matrix and vector operations*
+%
+% You can concatenate and refer to functions as Matlab does with vectors and matrices
+
+sF4 = [sF1; sF2];
+sF4(2:3);
+
+%%
+% You can conjugate the Fourier-coefficients and transpose/ctranspose the multivariate |S2FunHarmonic|.
+
+conj(sF1);
+sF1.';
+sF1';
+
+%%
+% Some other operations
+
+length(sF1);
+size(sF2);
+sF3 = reshape(sF3, 3, []);
+
+%%
+% *|sum| and |mean|*
+%
+% If you do not specify further options to |sum| or |mean| it gives you the integral or the mean value back for each function.
+% You can also calculate the conventional sum or the meanvalue over a dimension of a multivariate |S2FunHarmonic|.
+
+sum(sF1, 1);
+sum(sF3, 2);
+
+%%
+% *min/max*
+%
+% If the |min| or |max| command gets a multivariate |S2FunHarmonic| the pointwise minimum or maximum is calculated along the first non-singelton dimension if not specified otherwise.
+%
+
+min(sF3);
+
+%%
+% *Remark for matrix product*
+%
+% At this point the matrix product is implemented per element and not as the usual matrix product.
+
+
+
+%% Visualization
+% There are different ways to visualize a multivariate |S2FunHarmonic|
+%
+% The default |plot|-command
+plot(sF1); 
+
+%%
+% * |plot(sF1)| is the same same as |contourf(sF1)|
+
+%%
+% nonfilled contour plot
+contour(sF2, 'LineWidth', 2);
+
+%%
+% color plot without contours
+pcolor(sF3);
+
+%%
+% 3D plot which you can rotate around
+plot3d(sF2);
+
+%%
+% 3D plot where the radius of the sphere is transformed according to the function values
+surf(sF3);
+
+%%
+% Plot the intersection of the surf plot with a plane with normal vector |v|
+plotSection(sF1, zvector);
+
+%%
+% plotting the Fourier coefficients
+plotSpektra(sF2);
+set(gca,'FontSize', 20);
+
+##### SOURCE END #####
+--></body></html>

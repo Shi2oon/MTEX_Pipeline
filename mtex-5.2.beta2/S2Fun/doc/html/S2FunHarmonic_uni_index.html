@@ -1,0 +1,279 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Univariate S2FunHarmonic</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-01-23"><meta name="DC.source" content="S2FunHarmonic_uni_index.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Univariate <tt>S2FunHarmonic</tt></h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Defining a <tt>S2FunHarmonic</tt></a></li><li><a href="#10">Operations</a></li><li><a href="#30">Visualization</a></li></ul></div><h2 id="1">Defining a <tt>S2FunHarmonic</tt></h2><p><b>Definition via function values</b></p><p>At first you need some vertices</p><pre class="codeinput">nodes = equispacedS2Grid(<span class="string">'points'</span>, 1e5);
+nodes = nodes(:);
+</pre><p>Next you define function values for the vertices</p><pre class="codeinput">y = smiley(nodes);
+</pre><p>Now the actual command to get <tt>sF1</tt> of type <tt>S2FunHarmonic</tt></p><pre class="codeinput">sF1 = interp(nodes, y, <span class="string">'harmonicApproximation'</span>)
+</pre><pre class="codeoutput"> 
+sF1 = S2FunHarmonic  
+ bandwidth: 224
+ antipodal: true
+</pre><div><ul><li>The <tt>bandwidth</tt> property shows the maximal polynomial degree of the function.  Internally for a given bandwidth there are stored <img src="S2FunHarmonic_uni_index_eq07204186098443340480.png" alt="$(\mathrm{bandwidth}+1)^2$"> Fourier-coefficients.</li><li>The <tt>antipodal</tt> flag shows that <img src="S2FunHarmonic_uni_index_eq05142536305060616777.png" alt="$f(v) = f(-v)$"> holds for all <img src="S2FunHarmonic_uni_index_eq03296369778268784901.png" alt="$v\in\bf S^2$">.</li></ul></div><p>For the same result you could also run <tt>S2FunHarmonic.approximation(nodes, y)</tt> and give some additional options (<a href="S2FunHarmonic.approximation.html">see here</a>).</p><p><b>Definition via function handle</b></p><p>If you have a function handle for the function you could create a <tt>S2FunHarmonic</tt> via quadrature. At first lets define a function handle which takes <a href="vector3d_index.html"><tt>vector3d</tt></a> as an argument and returns double:</p><pre class="codeinput">f = @(v) 0.1*(v.theta+sin(8*v.x).*sin(8*v.y));
+</pre><p>Now you can call the quadrature command to get <tt>sF2</tt> of type <tt>S2FunHarmonic</tt></p><pre class="codeinput">sF2 = S2FunHarmonic.quadrature(f, <span class="string">'bandwidth'</span>, 50)
+</pre><pre class="codeoutput"> 
+sF2 = S2FunHarmonic  
+ bandwidth: 50
+</pre><div><ul><li>If you would leave the <tt>'bandwidth'</tt> option empty the default bandwidth would be considered, which is 128.</li><li>The quadrature is faster than the approximation, because it does not have to solve a system of equations. But the knowledge of the function handle is also a strong requirement.</li><li>For more options <a href="S2FunHarmonic.quadrature.html">see here</a>.</li></ul></div><p><b>Definition via Fourier-coefficients</b></p><p>If you already know the Fourier-coefficients, you can simply hand them as a column vector to the constructor of <tt>S2FunHarmonic</tt></p><pre class="codeinput">fhat = rand(25, 1);
+sF3 = S2FunHarmonic(fhat)
+</pre><pre class="codeoutput"> 
+sF3 = S2FunHarmonic  
+ bandwidth: 4
+</pre><h2 id="10">Operations</h2><p>The idea of <tt>S2Fun</tt> is to calculate with functions like Matlab does with vectors and matrices.</p><p><b>Basic arithmetic operations</b></p><p>addition/subtraction</p><pre class="codeinput">sF1+sF2; sF1+2;
+sF1-sF2; sF2-4;
+</pre><p>multiplication/division</p><pre class="codeinput">sF1.*sF2; 2.*sF1;
+sF1./(sF2+1); 2./sF2; sF2./4;
+</pre><p>power</p><pre class="codeinput">sF1.^sF2; 2.^sF1; sF2.^4;
+</pre><p>absolute value of a function</p><pre class="codeinput">abs(sF1);
+</pre><p><b>min/max</b></p><p>calculates the local min/max of a single function</p><pre class="codeinput">[minvalue, minnodes] = min(sF1);
+[maxvalue, maxnodes] = max(sF1);
+</pre><div><ul><li>as default <tt>min</tt> or <tt>max</tt> returns the smallest or the biggest value (global optima) with all nodes for which the value is obtained</li><li>with the option <tt>min(sF1, 'numLocal', n)</tt> the <tt>n</tt> nodes with the belonging biggest or smallest values are returned</li><li><tt>min(sF1)</tt> is the same as running <a href="S2Funharmonic.steepestDescent.html"><tt>steepestDescent(sF1)</tt></a></li></ul></div><p>min/max of two functions in the pointwise sense</p><pre class="codeinput">min(sF1, sF2);
+</pre><div><ul><li>See all options of min/max <a href="S2FunHarmonic.min.html">here</a></li></ul></div><p><b>Other operations</b></p><p>calculate the <img src="S2FunHarmonic_uni_index_eq11809360406450963432.png" alt="$L^2$">-norm, which is only the <img src="S2FunHarmonic_uni_index_eq06246994178291117440.png" alt="$l^2$">-norm of the Fourier-coefficients</p><pre class="codeinput">norm(sF1);
+</pre><p>calculate the mean value of a function</p><pre class="codeinput">mean(sF1);
+</pre><p>calculate the surface integral value of a function</p><pre class="codeinput">sum(sF1);
+</pre><p>rotate a function</p><pre class="codeinput">r = rotation(<span class="string">'Euler'</span>, [pi/4 0 0]);
+rotate(sF1, r);
+</pre><p>symmetrise a given function</p><pre class="codeinput">cs = crystalSymmetry(<span class="string">'6/m'</span>);
+sFs = symmetrise(sF1, cs);
+</pre><div><ul><li><tt>sFs</tt> is of type <a href="S2FunHarmonicSym_index.html"><tt>S2FunHarmonicSym</tt></a></li></ul></div><p><b>Gradient</b></p><p>Calculate the gradient as a function <tt>G</tt> of type <a href="S2VectorFieldHarmonic_index.html"><tt>S2VectorFieldHarmonic</tt></a></p><pre class="codeinput">G = grad(sF1);
+</pre><p>The direct evaluation of the gradient is faster and returns <a href="vector3d_index.html"><tt>vector3d</tt></a></p><pre class="codeinput">nodes = vector3d.rand(100);
+grad(sF1, nodes);
+</pre><h2 id="30">Visualization</h2><p>There are different ways to visualize a <tt>S2FunHarmonic</tt></p><p>The default <tt>plot</tt>-command</p><pre class="codeinput">plot(sF1);
+</pre><img vspace="5" hspace="5" src="S2FunHarmonic_uni_index_01.png" alt=""> <div><ul><li><tt>plot(sF1)</tt> is the same as <tt>contourf(sF1)</tt></li></ul></div><p>nonfilled contour plot</p><pre class="codeinput">contour(sF1, <span class="string">'LineWidth'</span>, 2);
+</pre><img vspace="5" hspace="5" src="S2FunHarmonic_uni_index_02.png" alt=""> <p>color plot without contours</p><pre class="codeinput">pcolor(sF1);
+</pre><img vspace="5" hspace="5" src="S2FunHarmonic_uni_index_03.png" alt=""> <p>3D plot which you can rotate around</p><pre class="codeinput">plot3d(sF2);
+</pre><img vspace="5" hspace="5" src="S2FunHarmonic_uni_index_04.png" alt=""> <p>3D plot where the radius of the sphere is transformed according to the function values</p><pre class="codeinput">surf(sF2);
+</pre><img vspace="5" hspace="5" src="S2FunHarmonic_uni_index_05.png" alt=""> <p>Plot the intersection of the surf plot with a plane with normal vector <tt>v</tt></p><pre class="codeinput">plotSection(sF2, zvector);
+</pre><img vspace="5" hspace="5" src="S2FunHarmonic_uni_index_06.png" alt=""> <p>plotting the Fourier coefficients</p><pre class="codeinput">plotSpektra(sF1);
+set(gca,<span class="string">'FontSize'</span>, 20);
+</pre><img vspace="5" hspace="5" src="S2FunHarmonic_uni_index_07.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Univariate |S2FunHarmonic|
+%
+%% Defining a |S2FunHarmonic|
+%
+%%
+% *Definition via function values*
+%
+% At first you need some vertices
+nodes = equispacedS2Grid('points', 1e5);
+nodes = nodes(:);
+%%
+% Next you define function values for the vertices
+y = smiley(nodes);
+%%
+% Now the actual command to get |sF1| of type |S2FunHarmonic|
+sF1 = interp(nodes, y, 'harmonicApproximation')
+%%
+% * The |bandwidth| property shows the maximal polynomial degree of the function.  Internally for a given bandwidth there are stored $(\mathrm{bandwidth}+1)^2$ Fourier-coefficients.
+% * The |antipodal| flag shows that $f(v) = f(-v)$ holds for all $v\in\bf S^2$.
+%
+% For the same result you could also run |S2FunHarmonic.approximation(nodes, y)| and give some additional options (<S2FunHarmonic.approximation.html see here>).
+
+%%
+% *Definition via function handle*
+%
+% If you have a function handle for the function you could create a |S2FunHarmonic| via quadrature.
+% At first lets define a function handle which takes <vector3d_index.html |vector3d|> as an argument and returns double:
+
+f = @(v) 0.1*(v.theta+sin(8*v.x).*sin(8*v.y));
+%% 
+% Now you can call the quadrature command to get |sF2| of type |S2FunHarmonic|
+sF2 = S2FunHarmonic.quadrature(f, 'bandwidth', 50)
+%%
+% * If you would leave the |'bandwidth'| option empty the default bandwidth would be considered, which is 128.
+% * The quadrature is faster than the approximation, because it does not have to solve a system of equations. But the knowledge of the function handle is also a strong requirement.
+% * For more options <S2FunHarmonic.quadrature.html see here>.
+
+%%
+% *Definition via Fourier-coefficients*
+%
+% If you already know the Fourier-coefficients, you can simply hand them as a column vector to the constructor of |S2FunHarmonic|
+fhat = rand(25, 1);
+sF3 = S2FunHarmonic(fhat)
+
+%% Operations
+% The idea of |S2Fun| is to calculate with functions like Matlab does with vectors and matrices.
+%
+% *Basic arithmetic operations*
+%
+%%
+% addition/subtraction
+sF1+sF2; sF1+2;
+sF1-sF2; sF2-4;
+
+%%
+% multiplication/division
+sF1.*sF2; 2.*sF1;
+sF1./(sF2+1); 2./sF2; sF2./4;
+
+%%
+% power
+sF1.^sF2; 2.^sF1; sF2.^4;
+
+%%
+% absolute value of a function
+abs(sF1);
+
+
+%%
+% *min/max*
+%
+%%
+% calculates the local min/max of a single function
+[minvalue, minnodes] = min(sF1);
+[maxvalue, maxnodes] = max(sF1);
+
+%%
+% * as default |min| or |max| returns the smallest or the biggest value (global optima) with all nodes for which the value is obtained
+% * with the option |min(sF1, 'numLocal', n)| the |n| nodes with the belonging biggest or smallest values are returned
+% * |min(sF1)| is the same as running <S2Funharmonic.steepestDescent.html |steepestDescent(sF1)|>
+%%
+% min/max of two functions in the pointwise sense
+%
+min(sF1, sF2);
+
+%%
+% * See all options of min/max <S2FunHarmonic.min.html here>
+
+%%
+% *Other operations*
+%%
+% calculate the $L^2$-norm, which is only the $l^2$-norm of the Fourier-coefficients
+norm(sF1);
+
+%%
+% calculate the mean value of a function
+mean(sF1);
+
+%%
+% calculate the surface integral value of a function
+sum(sF1);
+
+%%
+% rotate a function
+r = rotation('Euler', [pi/4 0 0]);
+rotate(sF1, r);
+
+%%
+% symmetrise a given function
+cs = crystalSymmetry('6/m');
+sFs = symmetrise(sF1, cs);
+
+%%
+% * |sFs| is of type <S2FunHarmonicSym_index.html |S2FunHarmonicSym|>
+
+%%
+% *Gradient*
+%%
+% Calculate the gradient as a function |G| of type <S2VectorFieldHarmonic_index.html |S2VectorFieldHarmonic|>
+%
+G = grad(sF1);
+
+%%
+% The direct evaluation of the gradient is faster and returns <vector3d_index.html |vector3d|>
+nodes = vector3d.rand(100);
+grad(sF1, nodes);
+
+
+%% Visualization
+% There are different ways to visualize a |S2FunHarmonic|
+%
+% The default |plot|-command
+plot(sF1); 
+
+%%
+% * |plot(sF1)| is the same as |contourf(sF1)|
+
+%%
+% nonfilled contour plot
+contour(sF1, 'LineWidth', 2);
+
+%%
+% color plot without contours
+pcolor(sF1);
+
+%%
+% 3D plot which you can rotate around
+plot3d(sF2);
+
+%%
+% 3D plot where the radius of the sphere is transformed according to the function values
+surf(sF2);
+
+%%
+% Plot the intersection of the surf plot with a plane with normal vector |v|
+plotSection(sF2, zvector);
+
+%%
+% plotting the Fourier coefficients
+plotSpektra(sF1);
+set(gca,'FontSize', 20);
+
+##### SOURCE END #####
+--></body></html>
