@@ -142,3 +142,42 @@ if xi~=0
 end
 close
 TwinedArea=round(100-sum(TwinedArea),3);
+
+%% compute the grain reference orientation deviation
+grod = ebsd.calcGROD(grains);
+% plot the misorientation angle of the GROD
+plot(ebsd,grod.angle./degree,'micronbar','off')
+mtexColorbar('title','misorientation angle to meanorientation in degree')
+mtexColorMap LaboTeX
+
+% overlay grain and subgrain boundaries
+hold on
+plot(grains.boundary,'lineWidth',1.5)
+plot(grains.innerBoundary,'edgeAlpha',grains.innerBoundary.misorientation.angle / (5*degree))
+hold off
+DirSave = fullfile(DirGB,'GROD.tif');
+saveas(gcf,DirSave);   
+
+%% Grain Orientation Spread (GOS)
+GOS = grainMean(ebsd, grod.angle);
+plot(grains, GOS ./ degree)
+mtexColorbar('title','GOS in degree')
+DirSave = fullfile(DirGB,'GOS.tif');
+saveas(gcf,DirSave);   
+
+%%
+% compute the color from the misorientation axis
+color = colorKey.direction2color(axCrystal);
+
+% and set the transperency from the misorientation angle
+alpha = min(grod.angle/degree/7.5,1);
+
+% plot the data
+plot(ebsd,color,'micronbar','off','faceAlpha',alpha,'figSize','large')
+
+hold on
+plot(grains.boundary,'lineWidth',2)
+plot(grains.innerBoundary,'edgeAlpha',grains.innerBoundary.misorientation.angle / (5*degree))
+hold off
+DirSave = fullfile(DirGB,'GOS_2.tif');
+saveas(gcf,DirSave);   
