@@ -3,9 +3,9 @@ for i=1:length(ebsd.indexedPhasesId) % key
     ipfKey = ipfColorKey(ebsd(ebsd.mineralList{ebsd.indexedPhasesId(i)}));   
     plot(ipfKey,'figSize','small');
     DirSave = fullfile(DirGB,[ebsd.mineralList{ebsd.indexedPhasesId(i)}...
-            ' Key_' xc '.png']);               saveas(gcf,DirSave); 	
+            ' Key.png']);               saveas(gcf,DirSave); 	
     DirSave = fullfile(DirGB,[ebsd.mineralList{ebsd.indexedPhasesId(i)}...
-            ' Key_' xc '.fig']);               saveas(gcf,DirSave);    close
+            ' Key.fig']);               saveas(gcf,DirSave);    close
 %         plot(ipfKey,'complete')
 % Dir.Save = fullfile(Dir.GB,[ebsd.mineralList{ebsd.indexedPhasesId(i)}...
 %' ' RawOrSmoothed ' Complete Key.png']);   saveas(gcf,Dir.Save); close all

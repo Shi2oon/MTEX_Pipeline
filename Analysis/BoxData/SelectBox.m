@@ -48,9 +48,12 @@ DirSave   = fullfile(pname,'Selection(s) Cordinate.mat');
 Dirfile   = [erase(fname,'.ctf') '.mat'];
 save(DirSave,'ebsdBox','counterss','pname','CS','xdata','ydata','Dirfile');
 
-for i=1:counterss
+for i=1:i
     pnames = [pname '\Selction_0' num2str(i)];   % path to files
     fnames = [pnames '\Selction_0' num2str(i)];  % which files to be imported
     mkdir(pnames);
-    startEBSD(CS,ebsdBox{i},fnames,pnames,'Box',xdata{i},ydata{i},Dirfile);
+    [ebsd,cs,grains,MisGB,Misanglede,TwinedArea] = GBs(ebsdBox{i},[pnames '\'],ebsdBox{i}.CS); 
+    PoleFigures(pnames,ebsdBox{i}.CSList,ebsd,grains);
+    save([erase(fnames,'.ctf') '_EBSD.mat'],'ebsd','cs','grains'); close all
+%     startEBSD(CS,ebsdBox{i},fnames,pnames,'Box',xdata{i},ydata{i},Dirfile);
 end

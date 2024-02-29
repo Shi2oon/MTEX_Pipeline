@@ -33,7 +33,10 @@ ebsd_line = spatialProfile(ebsd,lineSec);       % line esbd data
 xplot=ebsd_line.prop.x;     yplot=ebsd_line.prop.y;
 lineData=ebsd_line.rotations.angle./degree;
 
-lengthslope=sqrt((ebsd_line{2}.prop.x-min(ebsd_line{2}.prop.x)).^2 ...
-    + (ebsd_line{2}.prop.y-min(ebsd_line{2}.prop.y)).^2);
+lengthslope=sqrt((ebsd_line.prop.x-min(ebsd_line.prop.x)).^2 ...
+    + (ebsd_line.prop.y-min(ebsd_line.prop.y)).^2);
+plot(lengthslope,lineData,'.k','markersize',20)
+xlabel('Distance (\mum)');ylable('Angle^{o}'); box off
+saveas(gcf,[dir '_data.png']); saveas(gcf,[dir '_data.fig']); close 
 
 save([dir '.mat'],'lineData','lengthslope','ebsd_line')

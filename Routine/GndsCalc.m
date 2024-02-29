@@ -44,7 +44,7 @@ for i=1:length(EbsdDenoised.indexedPhasesId)
 % minimum. Depending on the attomic lattice different dislocattion systems  
 % have to be considered. Those principle dislocations are defined
 % in MTEX either by their Burgers and line vectors or by
-        [dS,~] = decideDS(CS{ebsd.indexedPhasesId(i)}, 0.3); % nu = 0.3; %poisson ratio
+        [dS,~] = decideDS(EbsdDenoised.CSList{ebsd.indexedPhasesId(i)}, 0.3); % nu = 0.3; %poisson ratio
 
 %Note that the unit of this tensors is the same as the unit used for describing 
 %the length of the unit cell, which is in most cases Angstrom (au). Furthremore,
@@ -91,10 +91,11 @@ colormap(jet(256));     %set(gcf,'position',[500,100,950,700]);
 set(gca,'CLim',[14 15.5]);
 DirSave = fullfile(DirDef,'GNDs.fig');        saveas(gcf,DirSave); 
 % mtexColorMap('hot'); 
-plot(grains.boundary,'linewidth',2,'micronbar','on'); hold off
+% plot(grains.boundary,'linewidth',2,'micronbar','on'); hold off
 title(['Step Size = ' num2str(StepSize) '\mum']);
 mtexColorbar('title','GNDs density (m/m^{3}), Logarithmic scale','fontsize',20)
-DirSave = fullfile(DirDef,'GNDs.png'); saveas(gcf,DirSave); close all
+DirSave = fullfile(DirDef,'GNDs.png'); saveas(gcf,DirSave); 
+DirSave = fullfile(DirDef,'GNDs.fig'); saveas(gcf,DirSave);close all
 
 %% re-arange GNDS
 [GND.total] = cells2map(GNDs,ebsd);

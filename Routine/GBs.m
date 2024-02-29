@@ -1,7 +1,7 @@
 %% Process
 function [ebsd,CS,grains,MisGB,Misanglede,TwinedArea]=GBs(ebsd,Dirpath,CS)
 clc; warning('off'); close;
-DirGB = fullfile(Dirpath,'EBSD Maps');       mkdir(DirGB);
+DirGB = fullfile(Dirpath, 'EBSD Maps');       mkdir(DirGB);
 
 %% when doing ferrite in  large map
 % plot(ebsd(ebsd.mineralList{ebsd.indexedPhasesId(2)}),...
@@ -12,10 +12,11 @@ DirGB = fullfile(Dirpath,'EBSD Maps');       mkdir(DirGB);
 %% Grain boundries
  	close    
 IPFZXY(ebsd,'x',DirGB); 	close
+IPFZXY(ebsd,'y',DirGB);     close
 IPFZXY(ebsd,'z',DirGB);
 %% grain boundray
 [grains,ebsd.grainId,ebsd.mis2mean] = calcGrains(ebsd('indexed'),'angle',5*degree);
-ebsd(grains(grains.grainSize<=20))   = []; 
+ebsd(grains(grains.grainSize<=20))   = []; % grains = smooth(grains,20);
 [grains,ebsd.grainId,ebsd.mis2mean] = calcGrains(ebsd('indexed'),'angle',5*degree);
 %                     grains          = grains('indexed');       
 %                     grains.boundary = grains.boundary('indexed');
@@ -54,6 +55,7 @@ idGrain(grains,ebsd,idx,DirGB,'biggest',0);close     % lineSec=[0 0,0 0];
 [~,idG]=max(grains.GOS);                        % plot  largest grain orientation spread
 idGrain(grains,ebsd,idG,DirGB,'Gradient',0);close    % lineSec=[0 0,0 0];
 
+%% The average of the misorientation angles to the grain mean orientation is called grain orientation spread (GOS)
 for i=1:length(ebsd.indexedPhasesId) % misorentation and area
     scatter(grains(ebsd.mineralList{ebsd.indexedPhasesId(i)}).equivalentRadius*2,...
             grains(ebsd.mineralList{ebsd.indexedPhasesId(i)}).GOS./degree,...
@@ -73,26 +75,32 @@ saveas(gcf,DirSave);                                           close
 
 %% KAM calculates the accumulated misorientation within the neighborhood
 % of a selected pixel.
-kamvalues = KAM(ebsd,'threshold',2*degree);
-plot(ebsd,ebsd.KAM./degree);                                    colormap(jet(256));
+% kamvalues = KAM;
+for iO=1:10
+plot(ebsd,ebsd.KAM(ebsd,'threshold',2*degree,'order',iO)./degree);                                    colormap(jet(256));
 mtexColorbar('title','Kernel Average Misorientation (KAM^{o})','fontsize',20); 
-setColorRange([0,2]);                                           hold on; 
+setColorRange([0,2.5]);                                           hold on; 
 plot(grains.boundary);                                          hold off
-DirSave = fullfile(DirGB,'Kernel Average Misorientation (KAM).tif');
+title(['Window size = ' num2str(iO)]);
+set(gcf,'position',[100,50,1382, 972]);
+DirSave = fullfile(DirGB,['Kernel Average Misorientation (KAM)_' num2str(iO) '.tif']);
 saveas(gcf,DirSave);                                           close
+end
 
 %% plot phases
 plot(grains) % phases
 DirSave = fullfile(DirGB,'Phase GB.tif');
 saveas(gcf,DirSave);                                           close
-%{
+
 %% bands and MAD
 plot(ebsd,ebsd.mad);                                            hold on; 
 plot(grains.boundary);                                          hold off
+colormap gray
+% caxis([0 max(ebsd.mad)])
 mtexColorbar('title','Mean Angular Deviation (MAD^{o})','fontsize',20)
 DirSave = fullfile(DirGB,'Mean Angular Deviation (MAD).tif'); 
 saveas(gcf,DirSave);                                           close
-
+%{
 %histogram(ebsd.mad); hist(ebsd.mad);
 histfit(ebsd.mad,40)
 pd = fitdist(ebsd.mad,'Normal');
@@ -101,13 +109,31 @@ title(['Fitting \mu = ' num2str(pd.mu) ' and \Sigma = ' num2str(pd.sigma)]);
 xlabel('Mean Angular Deviation (MAD^{o})');     ylabel('Realtive Occurrence');
 DirSave = fullfile(DirGB,'Mean Angular Deviation (MAD) hist.tif'); 
 saveas(gcf,DirSave);                                           close
-
+%}
 plot(ebsd,ebsd.bands);                                          hold on;
 plot(grains.boundary);                                          hold off
+colormap gray
+% caxis([0 max(ebsd.bands)])
 mtexColorbar('title','Level of Indexing Quality','fontsize',20)
 DirSave = fullfile(DirGB,'Level of Indexing Quality.tif');
 saveas(gcf,DirSave);                                           close
-%}
+
+plot(ebsd,ebsd.bc);                                          hold on;
+plot(grains.boundary);                                          hold off
+colormap gray
+% caxis([0 max(ebsd.bc)])
+mtexColorbar('title','BC','fontsize',20)
+DirSave = fullfile(DirGB,'BC.tif');
+saveas(gcf,DirSave);                                           close
+
+plot(ebsd,ebsd.bs);                                          hold on;
+plot(grains.boundary);                                          hold off
+colormap gray
+caxis([0 max(ebsd.bs)])
+mtexColorbar('title','BS','fontsize',20)
+DirSave = fullfile(DirGB,'BS.tif');
+saveas(gcf,DirSave);                                           close
+
 %% Twinning
 plot(grains.boundary);          hold on
 for i=1:length(ebsd.indexedPhasesId)
@@ -142,3 +168,50 @@ if xi~=0
 end
 close
 TwinedArea=round(100-sum(TwinedArea),3);
+%% compute the grain reference orientation deviation
+grod = ebsd.calcGROD(grains);
+% plot the misorientation angle of the GROD
+plot(ebsd,grod.angle./degree,'micronbar','off')
+mtexColorbar('title','misorientation angle to meanorientation in degree')
+mtexColorMap LaboTeX
+
+% overlay grain and subgrain boundaries
+hold on
+plot(grains.boundary,'lineWidth',1)
+for i=1:length(ebsd.indexedPhasesId) % key
+plot(grains(ebsd.mineralList{ebsd.indexedPhasesId(i)}).innerBoundary,...
+    'edgeAlpha',grains(ebsd.mineralList{ebsd.indexedPhasesId(i)}).innerBoundary.misorientation.angle/(5*degree))
+end
+hold off
+DirSave = fullfile(DirGB,'GROD.tif'); saveas(gcf,DirSave);   close
+
+%%
+axCrystal = grod.axis;
+plot(axCrystal,'contourf','fundamentalRegion','antipodal','figSize','small')
+mtexColorbar('title','distribution of misorientation axes in mrd')
+DirSave = fullfile(DirGB,'GROD_IPF.tif'); saveas(gcf,DirSave);   close
+
+%% Grain Orientation Spread (GOS)
+GOS = grainMean(ebsd, grod.angle);
+plot(grains, GOS ./ degree)
+mtexColorbar('title','GOS in degree')
+DirSave = fullfile(DirGB,'GOS.tif'); saveas(gcf,DirSave);   close
+
+%% compute the color from the misorientation axis
+% The misorientation axis in crystal coordinates can be related to active 
+% slipsystems. See: V. Tong, E. Wielewski, B. Britton
+axCrystal = grod.axis;hold on;
+for i=1:length(ebsd.indexedPhasesId) % key
+    colorKey = HSVDirectionKey(ebsd.CSList{ebsd.indexedPhasesId(i)},'antipodal');
+    color = colorKey.direction2color(axCrystal);
+    alpha = min(grod.angle/degree/7.5,1);
+    plot(ebsd,color,...
+        'micronbar','on','faceAlpha',alpha,'figSize','large')
+end
+hold on;plot(grains.boundary,'lineWidth',2);
+for i=1:length(ebsd.indexedPhasesId) % key
+plot(grains(ebsd.mineralList{ebsd.indexedPhasesId(i)}).innerBoundary,...
+    'edgeAlpha',grains(ebsd.mineralList{ebsd.indexedPhasesId(i)}).innerBoundary.misorientation.angle/(5*degree))
+end
+hold off
+DirSave = fullfile(DirGB,'GOS_2.tif'); saveas(gcf,DirSave);   close

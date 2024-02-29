@@ -14,7 +14,7 @@ for i=1:length(ebsd.indexedPhasesId)
     %MTEX includes an automatic halfwidth selection algorithm
     PsI    = calcKernel(ebsd(ebsd.mineralList{ebsd.indexedPhasesId(i)}).orientations);
     Psi    = calcKernel(grains(ebsd.mineralList{ebsd.indexedPhasesId(i)}).meanOrientation);
-    [hw]   = erroOPFe(DirPoleF,CS{ebsd.indexedPhasesId(i)},PsI,Psi);
+    [hw]   = erroOPFe(DirPoleF,ebsd.CSList{ebsd.indexedPhasesId(i)},PsI,Psi);
     odf{i} = calcODF(ebsd(ebsd.mineralList{ebsd.indexedPhasesId(i)}).orientations,'kernel',hw);
     h      = [Miller(1,1,0,odf{i}.CS),Miller(1,1,1,odf{i}.CS),Miller(0,0,1,odf{i}.CS),Miller(1,1,2,odf{i}.CS)]; %,...
     %Miller(2,1,1,odf{i}.CS)];
@@ -75,7 +75,7 @@ for i=1:length(ebsd.indexedPhasesId)
     xc = {'x','y','z'};
     for iX=3
         newMtexFigure('nrows',1,'ncols',length(h));
-        set(gcf,'visible','off');
+%         set(gcf,'visible','off');
         for iK=1:length(h)
             nextAxis(1,iK)
             for iV=1:length(GRAINS)
@@ -99,7 +99,7 @@ for i=1:length(ebsd.indexedPhasesId)
     %
     for iX=3
         newMtexFigure('nrows',1,'ncols',length(h));
-        set(gcf,'visible','off');
+%         set(gcf,'visible','off');
         for iK=1:length(h)
             nextAxis(1,iK)
             for iV=1:length(GRAINS)

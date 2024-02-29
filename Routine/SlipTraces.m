@@ -101,8 +101,10 @@ end
 close all;
 for i=1:length(sSlocal)
     % visualize the trace of the slip plane
+    if abs(abs(round(sS(i).n.h))+abs(round(sS(i).n.k))+abs(round(sS(i).n.l)))==1
     quiver(grain,sSlocal(i).trace,'autoScaleFactor',abs(SF(i)),'color','k')
     hold on;
+    end
 end
 axis off;       legend off;         hold off; axis image;
 saveas(gcf,[fname,'_trace_' direction '.tif']);
@@ -129,12 +131,14 @@ count=0;
 for i=noM
     count=count+1;
     % visualize the trace of the slip plane
+    if abs(abs(round(sS(i).n.h))+abs(round(sS(i).n.k))+abs(round(sS(i).n.l)))==1
     quiver(grain,sSlocal(i).trace,'autoScaleFactor',abs(SF(i)),'color',cc(i,:),...
         'DisplayName',[ '(' num2str(round(sS(i).n.h)) ...
         num2str(round(sS(i).n.k)) num2str(round(sS(i).n.l)) ')[' ...
         num2str(round(sS(i).b.u)) num2str(round(sS(i).b.v)) ...
         num2str(round(sS(i).b.w)) '], ' num2str(abs(SF(i)))],'linewidth',4)
     hold on;
+    end
 end
 axis off;       legend off;         hold off;
 lgd = legend('location','bestoutside','fontsize',20,'box','off');
@@ -156,12 +160,14 @@ count=0; hold on
 for i=noM
     count=count+1;
     % visualize the trace of the slip plane
+    if abs(abs(round(sS(i).n.h))+abs(round(sS(i).n.k))+abs(round(sS(i).n.l)))==1
     quiver(grain,sSlocal(i).trace,'autoScaleFactor',abs(SF(i)),'color',cc(i,:),...
         'DisplayName',[ '(' num2str(round(sS(i).n.h)) ...
         num2str(round(sS(i).n.k)) num2str(round(sS(i).n.l)) ')[' ...
         num2str(round(sS(i).b.u)) num2str(round(sS(i).b.v)) ...
         num2str(round(sS(i).b.w)) '], ' num2str(abs(SF(i)))],'linewidth',4)
     hold on;
+    end
 end
 axis off;       legend off;         hold off;
 lgd = legend('location','bestoutside','fontsize',20,'box','off');
@@ -176,12 +182,14 @@ count=0;
 for i=noM
     count=count+1;
     % visualize the trace of the slip plane
+    if abs(abs(round(sS(i).n.h))+abs(round(sS(i).n.k))+abs(round(sS(i).n.l)))==1
     quiver(grain,sSlocal(i).trace,'autoScaleFactor',abs(SF(i)),'color',cc(i,:),...
         'DisplayName',[ '(' num2str(round(sS(i).n.h)) ...
         num2str(round(sS(i).n.k)) num2str(round(sS(i).n.l)) ')[' ...
         num2str(round(sS(i).b.u)) num2str(round(sS(i).b.v)) ...
         num2str(round(sS(i).b.w)) '], ' num2str(abs(SF(i)))],'linewidth',4)
     hold on;
+    end
 end
 axis off;       legend off;         hold off;
 lgd = legend('location','bestoutside','fontsize',20,'box','off');

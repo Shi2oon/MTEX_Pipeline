@@ -1,4 +1,4 @@
-function [C]=StiffnessEBSD(ebsd)
+function [C]=StiffnessEBSD(ebsd,Dirpath)
 % a code to calculate stifness matrix for each grain
 % you will need MTEX
 % there os an example included .. feel free to run it and to compare the
@@ -6,10 +6,13 @@ function [C]=StiffnessEBSD(ebsd)
 % https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=5430873
 % ref. http://web.mit.edu/16.20/homepage/3_Constitutive/Constitutive_files/module_3_with_solutions.pdf
 close all; warning off
-
+DirGB = [Dirpath 'EBSD Maps']; 
 [grains,ebsd.grainId,ebsd.mis2mean] = calcGrains(ebsd('indexed'),'angle',2*degree);
 ebsd(grains(grains.grainSize<=10))   = []; 
 [grains,ebsd.grainId,ebsd.mis2mean] = calcGrains(ebsd('indexed'),'angle',2*degree);
+plot(grains.boundary);                       
+text(grains,num2str(grains.id));        
+DirSave = fullfile(DirGB,'GB stifness.tif'); saveas(gcf,DirSave);  close
 
 for iGrain=1:length(grains)
 % define the reference frame
