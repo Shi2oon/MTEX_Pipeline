@@ -15,9 +15,9 @@ IPFZXY(ebsd,'x',DirGB); 	close
 IPFZXY(ebsd,'y',DirGB);     close
 IPFZXY(ebsd,'z',DirGB);
 %% grain boundray
-[grains,ebsd.grainId,ebsd.mis2mean] = calcGrains(ebsd('indexed'),'angle',5*degree);
+[grains,ebsd.grainId,ebsd.mis2mean] = calcGrains(ebsd('indexed'),'angle',3*degree);
 ebsd(grains(grains.grainSize<=20))   = []; % grains = smooth(grains,20);
-[grains,ebsd.grainId,ebsd.mis2mean] = calcGrains(ebsd('indexed'),'angle',5*degree);
+
 %                     grains          = grains('indexed');       
 %                     grains.boundary = grains.boundary('indexed');
 %                     grains          = smooth(grains,5);
@@ -26,7 +26,6 @@ DirSave = fullfile(DirGB,'GBed.tif'); saveas(gcf,DirSave);  close
 plot(grains.boundary);                       
 text(grains,num2str(grains.id));        
 DirSave = fullfile(DirGB,'GB and no.tif'); saveas(gcf,DirSave);  close
-
 
 hist(grains);   
 DirSave = fullfile(DirGB,'GB size.tif');       saveas(gcf,DirSave);
@@ -96,6 +95,7 @@ saveas(gcf,DirSave);                                           close
 plot(ebsd,ebsd.mad);                                            hold on; 
 plot(grains.boundary);                                          hold off
 colormap gray
+
 % caxis([0 max(ebsd.mad)])
 mtexColorbar('title','Mean Angular Deviation (MAD^{o})','fontsize',20)
 DirSave = fullfile(DirGB,'Mean Angular Deviation (MAD).tif'); 
@@ -168,6 +168,7 @@ if xi~=0
 end
 close
 TwinedArea=round(100-sum(TwinedArea),3);
+
 %% compute the grain reference orientation deviation
 grod = ebsd.calcGROD(grains);
 % plot the misorientation angle of the GROD
@@ -215,3 +216,4 @@ plot(grains(ebsd.mineralList{ebsd.indexedPhasesId(i)}).innerBoundary,...
 end
 hold off
 DirSave = fullfile(DirGB,'GOS_2.tif'); saveas(gcf,DirSave);   close
+

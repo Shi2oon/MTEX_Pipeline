@@ -1,0 +1,130 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>S2FunHarmonicSym</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-01-23"><meta name="DC.source" content="S2FunHarmonicSym_index.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1><b><tt>S2FunHarmonicSym</tt></b></h1><!--introduction--><p>This site only covers on top differences to <tt>S2FunHarmonic</tt>. For a introduction to the essentials have a look <a href="S2FunHarmonic_index.html">here</a>.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Defining a <tt>S2FunHarmonic</tt></a></li><li><a href="#5">Visualization</a></li></ul></div><h2 id="1">Defining a <tt>S2FunHarmonic</tt></h2><p><b>Definition via symmetrisation</b></p><p>The simplest way to define a <tt>S2FunHarmonicSym</tt> is through the symmetrisation of an ordinary <tt>S2FunHarmonic</tt>.</p><pre class="codeinput">sF = S2FunHarmonic.quadrature(@(v) smiley(v))
+cs = crystalSymmetry(<span class="string">'432'</span>);
+
+sFs1 = symmetrise(sF, cs);
+</pre><pre class="codeoutput"> 
+sF = S2FunHarmonic  
+ bandwidth: 128
+ antipodal: true
+</pre><p><b>Definition via function handle</b></p><p>If you have a function handle for the function you could create a <tt>S2FunHarmonicSym</tt> via quadrature. At first lets define a function handle which takes <a href="vector3d_index.html"><tt>vector3d</tt></a> as an argument and returns double and a symmetry:</p><pre class="codeinput">f = @(v) 0.1*(v.theta+sin(8*v.x).*sin(8*v.y));
+cs = crystalSymmetry(<span class="string">'6/m'</span>);
+</pre><p>Now you can call the quadrature command to get <tt>sFs2</tt> of type <tt>S2FunHarmonicSym</tt></p><pre class="codeinput">sFs2 = S2FunHarmonicSym.quadrature(f, cs)
+</pre><pre class="codeoutput"> 
+sFs2 = S2FunHarmonic  
+ symmetry: 6/m, X||a*, Y||b, Z||c*
+ bandwidth: 128
+ antipodal: true
+</pre><h2 id="5">Visualization</h2><p>The plot commands for a <tt>S2FunHarmonicSym</tt> plots the function only on the fundamenta Sector of the symmetrie by default. E.g. the default <tt>plot</tt>-command look as follows</p><pre class="codeinput">plot(sFs1);
+</pre><img vspace="5" hspace="5" src="S2FunHarmonicSym_index_01.png" alt=""> <p>Another Example is the color plot</p><pre class="codeinput">contour(sFs2);
+</pre><img vspace="5" hspace="5" src="S2FunHarmonicSym_index_02.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% *|S2FunHarmonicSym|*
+% This site only covers on top differences to |S2FunHarmonic|.
+% For a introduction to the essentials have a look <S2FunHarmonic_index.html here>.
+%
+
+%% Defining a |S2FunHarmonic|
+%
+%%
+% *Definition via symmetrisation*
+%
+% The simplest way to define a |S2FunHarmonicSym| is through the symmetrisation of an ordinary |S2FunHarmonic|.
+
+sF = S2FunHarmonic.quadrature(@(v) smiley(v))
+cs = crystalSymmetry('432');
+
+sFs1 = symmetrise(sF, cs);
+
+%%
+% *Definition via function handle*
+%
+% If you have a function handle for the function you could create a |S2FunHarmonicSym| via quadrature.
+% At first lets define a function handle which takes <vector3d_index.html |vector3d|> as an argument and returns double and a symmetry:
+
+f = @(v) 0.1*(v.theta+sin(8*v.x).*sin(8*v.y));
+cs = crystalSymmetry('6/m');
+%% 
+% Now you can call the quadrature command to get |sFs2| of type |S2FunHarmonicSym|
+sFs2 = S2FunHarmonicSym.quadrature(f, cs)
+
+%% Visualization
+% The plot commands for a |S2FunHarmonicSym| plots the function only on the fundamenta Sector of the symmetrie by default.
+% E.g. the default |plot|-command look as follows
+
+plot(sFs1); 
+
+%%
+% Another Example is the color plot
+
+contour(sFs2);
+
+##### SOURCE END #####
+--></body></html>

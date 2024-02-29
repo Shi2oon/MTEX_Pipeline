@@ -1,0 +1,116 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>S2Fun</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-01-23"><meta name="DC.source" content="S2Fun_index.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1><b><tt>S2Fun</tt></b></h1><!--introduction--><p>The <tt>S2Fun</tt> toolbox is a collection of MATLAB&reg; classes for numerical computation with functions on the two-dimensional sphere. It overloads the default commands for vectors and matrices to compute the analogous operations for functions of the given type. For example the product becomes the pointwise product of two functions. Likewise the <tt>min</tt> command finds local minima.</p><p>The underlying mathematical approach is accomplished via spherical harmonics which form an orthonormal basis on the two-dimensional sphere. Internally for a function <img src="S2Fun_index_eq04661004810784475046.png" alt="$f\colon \bf S^2\to \bf R$"> only the corresponding Fourier-coefficients are stored.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1"><a href="S2FunHarmonic_index.html"><b><tt>S2FunHarmonic</tt></b></a></a></li><li><a href="#2"><a href="S2FunHarmonicSym_index.html"><b><tt>S2FunHarmonicSym</tt></b></a></a></li><li><a href="#3"><a href="S2VectorFieldHarmonic_index.html"><b><tt>S2VectorFieldHarmonic</tt></b></a></a></li><li><a href="#4"><a href="S2AxisFieldHarmonic_index.html"><b><tt>S2AxisFieldHarmonic</tt></b></a></a></li></ul></div><h2 id="1"><a href="S2FunHarmonic_index.html"><b><tt>S2FunHarmonic</tt></b></a></h2><p><tt>S2FunHarmonic</tt> forms the basis of <tt>S2Fun</tt>. It can handle ordinary functions</p><p><img src="S2Fun_index_eq17095550202462214049.png" alt="$$f\colon \bf S^2\to \bf R$$"></p><p>but also multivariate function</p><p><img src="S2Fun_index_eq02005284333143081024.png" alt="$$ f\colon \bf S^2\to \bf R^n $$">.</p><h2 id="2"><a href="S2FunHarmonicSym_index.html"><b><tt>S2FunHarmonicSym</tt></b></a></h2><p><tt>S2FunHarmonic</tt> is an extension of the <tt>S2FunHarmonic</tt> class for which you can store the symmetry with the function. Various commands are adapted to the symmetry in regards to performance and general function handling. For instance the <tt>plot</tt> command only plots the function on the important part of the sphere.</p><h2 id="3"><a href="S2VectorFieldHarmonic_index.html"><b><tt>S2VectorFieldHarmonic</tt></b></a></h2><p><tt>S2VectorFieldHarmonic</tt> handles a function</p><p><img src="S2Fun_index_eq02764888670548314535.png" alt="$$ f\colon \bf S^2\to\bf R^3 $$"></p><p>which then is interpreted as a vector field. For instance the gradient of an univariate <tt>S2Fun</tt> can return a <tt>S2VectorFieldHarmonic</tt>.</p><h2 id="4"><a href="S2AxisFieldHarmonic_index.html"><b><tt>S2AxisFieldHarmonic</tt></b></a></h2><p><tt>S2AxisFieldHarmonic</tt> handles functions of the form</p><p><img src="S2Fun_index_eq05196190540438093418.png" alt="$$ f\colon \bf S^2\to\bf R^3_{/<\pm \mathrm{Id}&gt;} $$"></p><p>which can be understood as vectors in <img src="S2Fun_index_eq02553402412459337255.png" alt="$\bf R^3$"> without direction or length.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% *|S2Fun|*
+%
+% The |S2Fun| toolbox is a collection of MATLAB(R) classes for numerical computation with functions on the two-dimensional sphere.
+% It overloads the default commands for vectors and matrices to compute the analogous operations for functions of the given type.
+% For example the product becomes the pointwise product of two functions.
+% Likewise the |min| command finds local minima.
+%
+% The underlying mathematical approach is accomplished via spherical harmonics which form an orthonormal basis on the two-dimensional sphere.
+% Internally for a function $f\colon \bf S^2\to \bf R$ only the corresponding Fourier-coefficients are stored.
+%
+%% <S2FunHarmonic_index.html *|S2FunHarmonic|*>
+%
+% |S2FunHarmonic| forms the basis of |S2Fun|.
+% It can handle ordinary functions 
+%
+% $$f\colon \bf S^2\to \bf R$$
+%
+% but also multivariate function 
+%
+% $$ f\colon \bf S^2\to \bf R^n $$.
+%
+%% <S2FunHarmonicSym_index.html *|S2FunHarmonicSym|*>
+%
+% |S2FunHarmonic| is an extension of the |S2FunHarmonic| class for which you can store the symmetry with the function.
+% Various commands are adapted to the symmetry in regards to performance and general function handling.
+% For instance the |plot| command only plots the function on the important part of the sphere.
+%
+%% <S2VectorFieldHarmonic_index.html *|S2VectorFieldHarmonic|*>
+%
+% |S2VectorFieldHarmonic| handles a function 
+%
+% $$ f\colon \bf S^2\to\bf R^3 $$
+%
+% which then is interpreted as a vector field.
+% For instance the gradient of an univariate |S2Fun| can return a |S2VectorFieldHarmonic|.
+%
+%% <S2AxisFieldHarmonic_index.html *|S2AxisFieldHarmonic|*>
+%
+% |S2AxisFieldHarmonic| handles functions of the form 
+%
+% $$ f\colon \bf S^2\to\bf R^3_{/<\pm \mathrm{Id}>} $$
+%
+% which can be understood as vectors in $\bf R^3$ without direction or length.
+
+##### SOURCE END #####
+--></body></html>
