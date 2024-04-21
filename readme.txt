@@ -4,13 +4,13 @@ all you need to do then is run the startEBSD function as below
 
 startEBSD('full directory of the .ctf file')
 
-This MTEX analysis pipeline for data from Oxford system (I think I got the orientation right but please have a play with it using your data and let me know. For now it accommodates austenite, ferrite, moissanite, silicon ad Nikel (all cubic) but can be modified to include more materials maybe hexagonal.
+This MTEX analysis pipeline for data from the Oxford system (I think I got the orientation right, but please have a play with it using your data and let me know) accommodates austenite, ferrite, moissanite, silicon, and Nikel (all cubic) but can be modified to include more materials, maybe hexagonal.
 
 
-** make sure to install the mtex included with the code as it edited to work with code, I did not push these changes to MTEX authors for approval yet .. so be patient as I'm improving this code to part of MTEX **
+** make sure to install the MTEX included with the code as it is edited to work with the code; I did not push these changes to MTEX authors for approval yet .. so be patient as I'm improving this code to part of MTEX **
 
 The code gives (order in the steps included in the code, which can be accessed via the STP variable when using the startEBSD function): 
-1) reorganise and fill the data
+1) reorganise and fill in the data
 
 2) EBSD maps with some statistics (I can add more as required).
 
@@ -20,20 +20,18 @@ The code gives (order in the steps included in the code, which can be accessed v
 
 5) plot the crystal shape orientation in the maps for illustration
 
-6) Trace analysis, see details at https://ora.ox.ac.uk/objects/uuid:f2ba08f3-4a27-4619-92ed-bcd3834dadf0/files/d765371972, pages 106-107.
+6) plot traces if you have less than 4 grains but can be made to plot the slip traces of a specific grain; see details at https://ora.ox.ac.uk/objects/uuid:f2ba08f3-4a27-4619-92ed-bcd3834dadf0/files/d765371972, pages 106-107.
 
-5) plot traces if you have less than 4 grains but can be made to plot the slip traces of a specific grain
+7) Local Schmid factor (see: https://doi.org/10.1016/j.actamat.2016.12.066)
 
-6) Local schmid factor (see: https://doi.org/10.1016/j.actamat.2016.12.066)
+8) Hough based GNDs (see: https://iopscience.iop.org/article/10.1088/1757-899X/304/1/012003/meta)
 
-7) Hough based GNDs (see: https://iopscience.iop.org/article/10.1088/1757-899X/304/1/012003/meta)
+9) Anisotropic stiffness matrix, including Young modulus, Poisson ratio, and shear modulus (see supplementary material: https://doi.org/10.1016/j.actamat.2021.117203)
 
-8) Anisotropic stiffness matrix, including Young modulus, Posion ration, and shear modulus (see: supplementary material: https://www.sciencedirect.com/science/article/abs/pii/S1359645421005838)
+10) merging data from xEBSD code with MTEX (currently deactivated)
 
-9) create an abaqus model
+11) create an Abaqus model
 
+feel free to remove the comments and try them and let me know how I can help/improve
 
-feel free to remove the comment and try them and let me know how I can help/improve
-
-
-grainGropu function is good if you want to look to a specific grain and you a have HR-EBSD, it does some fancy calculation for the slip tracing (reference is under review)
+grainGropu function is good if you want to look to a specific grain and you have HR-EBSD; it does some fancy calculations for the slip tracing (see supplementary material: https://doi.org/10.1016/j.actamat.2022.118284, local xSF)
