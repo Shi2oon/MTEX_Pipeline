@@ -9,13 +9,18 @@ This MTEX analysis pipeline for data from Oxford system (I think I got the orien
 
 ** make sure to install the mtex included with the code as it edited to work with code, I did not push these changes to MTEX authors for approval yet .. so be patient as I'm improving this code to part of MTEX **
 
-The code gives: 1) EBSD maps with some statistics (I can add more as required).
+The code gives (order in the steps included in the code, which can be accessed via the STP variable when using the startEBSD function): 
+1) reorganise and fill the data
 
-2) pole figures (won't work if MTEX is not installed properly)
+2) EBSD maps with some statistics (I can add more as required).
 
-3) Schmid and Taylor factors
+3) pole figures (won't work if MTEX is not installed properly)
 
-4) plot the crystal shape orientation in the maps for illustration
+4) Schmid and Taylor factors
+
+5) plot the crystal shape orientation in the maps for illustration
+
+6) Trace analysis, see details at https://ora.ox.ac.uk/objects/uuid:f2ba08f3-4a27-4619-92ed-bcd3834dadf0/files/d765371972, pages 106-107.
 
 5) plot traces if you have less than 4 grains but can be made to plot the slip traces of a specific grain
 
