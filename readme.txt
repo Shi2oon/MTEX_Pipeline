@@ -12,15 +12,16 @@ This MTEX analysis pipeline for data from the Oxford system (I think I got the o
 The code gives (order in the steps included in the code, which can be accessed via the STP variable when using the startEBSD function): 
 1) reorganise and fill in the data
 
-2) EBSD maps with some statistics (I can add more as required).
+2) EBSD maps with some statistics (function name "GBs")
 
-3) pole figures (won't work if MTEX is not installed properly)
+3) pole figures (function name "PoleFigures"), won't work if MTEX is not installed properly
 
-4) Schmid and Taylor factors
+4) Schmid and Taylor factors (SchmidTaylorEBSD)
 
-5) plot the crystal shape orientation in the maps for illustration
+5) plot the crystal shape orientation in the maps for illustration (PlotCrystalShape)
 
-6) plot traces if you have less than 4 grains but can be made to plot the slip traces of a specific grain; see details at https://ora.ox.ac.uk/objects/uuid:f2ba08f3-4a27-4619-92ed-bcd3834dadf0/files/d765371972, pages 106-107.
+6) plot traces if you have less than 4 grains but can be made to plot the slip traces of a specific grain (SlipTraces); see details at https://ora.ox.ac.uk/objects/uuid:f2ba08f3-4a27-4619-92ed-bcd3834dadf0/files/d765371972, pages 106-107.
+The function produces a couple of figures, including the legend. The correct oreination of the trace is the one included in the EBSD map. I do not know why, but MATLAB messes up the plotting coordinates. Reach out at abdo.aog@gmail.com if you have questions.
 
 7) Local Schmid factor (see: https://doi.org/10.1016/j.actamat.2016.12.066)
 
