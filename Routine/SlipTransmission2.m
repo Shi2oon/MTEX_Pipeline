@@ -1,4 +1,7 @@
 function [mp,gb]=SlipTransmission2(ebsd,sS,Dir)
+% input ebsd= EBSD map
+% sS = slips 
+% Dir = directory where you want to save
 [ebsd] = fill(ebsd);      
 [grains,ebsd.grainId,ebsd.mis2mean] = calcGrains(ebsd('indexed'),'angle',2*degree);
 ebsd(grains(grains.grainSize<=50))   = []; 
